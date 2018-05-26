@@ -11,8 +11,10 @@ public class CommitchainData
 {
 
 	public static final String RESPONSE_FLAG_TODO = "1";// 1.待上链
-	public static final String RESPONSE_FLAG_SUCCESS = "2";// 2.上链成功
-	public static final String RESPONSE_FLAG_FAIL = "3";// 3.上链失败
+	public static final String RESPONSE_FLAG_DOING = "2";// 2.准备上链
+	public static final String RESPONSE_FLAG_SUCCESS = "3";// 3.上链成功
+	public static final String RESPONSE_FLAG_FAIL = "4";// 4.上链失败
+	public static final String RESPONSE_FLAG_CHECKFAIL = "5";// 4.数据验证失败
 	
 	public static final String CHECK_FLAG_TODO = "1";// 1.待验证
 	public static final String CHECK_FLAG_SUCCESS = "2";// 2.已验证成功 
@@ -32,7 +34,7 @@ public class CommitchainData
 	private String amountcurrency = ""; // 货币类型
 	private String amountissuer = ""; // 货币发行方
 
-	private String responseFlag = "";// 1.待响应 2.响应成功 3.响应失败
+	private String responseFlag = "";// 1.待上链 2.准备上链 3.上链成功 4.上链失败
 	private String responseMsg = "";//响应成功失败等信息
 	private String responseHash = "";//响应的hash
 	@Temporal(TemporalType.TIMESTAMP)

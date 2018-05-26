@@ -17,6 +17,8 @@ public class CommitchainVerifyData
 	@Id // 这是一个主键
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 自增主键
 	private Integer id;
+	
+	private Integer cid;//上链数据表主键
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "date")
@@ -165,4 +167,14 @@ public class CommitchainVerifyData
 		this.checkmsg = checkmsg;
 	}
 
+	public Integer getCid()
+	{
+		return cid;
+	}
+
+	public void setCid(Integer cid)
+	{
+		this.cid = cid;
+	}
+	
 }
