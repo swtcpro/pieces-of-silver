@@ -25,7 +25,7 @@ public class TimerDataTask
 
 	public static boolean firstRun = true;
 
-	@Value("${subscribe_address}")
+	@Value("${address}")
 	private String subscribeAddress;
 
 	public static List<TimerData> tobeCheckTranList = new ArrayList();

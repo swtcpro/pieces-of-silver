@@ -20,7 +20,7 @@ public class WebSocketTask
 	private SocketDataService socketDataService;
 
 
-	@Value("${subscribe_address}")
+	@Value("${address}")
 	private String subscribeAddress;
 	
 	
