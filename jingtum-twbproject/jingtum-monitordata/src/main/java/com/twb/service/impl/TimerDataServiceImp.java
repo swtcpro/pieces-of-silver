@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import com.aliyun.openservices.shade.com.alibaba.fastjson.JSON;
 import com.jingtongsdk.bean.Jingtong.reqrsp.Transaction;
 import com.jingtongsdk.bean.Jingtong.reqrsp.TransactionAmount;
 import com.jingtongsdk.bean.Jingtong.reqrsp.TransactionsRecordRequest;
@@ -141,7 +144,10 @@ public class TimerDataServiceImp implements TimerDataService
 				rvd.setDate(timerData.getDate());
 				rvd.setFee(timerData.getFee());
 				rvd.setHash(timerData.getHash());
-				rvd.setMemos(timerData.getMemos());
+				String memos = timerData.getMemos();
+				rvd.setMemos(memos);
+				Integer cid = getCid(memos);
+				rvd.setCid(cid);
 				rvd.setResult(timerData.getResult());
 				rvd.setType(timerData.getType());
 				rvd.setCheckflag(CommitchainVerifyData.CHECKFLAG_TOCHECK);
@@ -150,6 +156,33 @@ public class TimerDataServiceImp implements TimerDataService
 			
 		}
 		return list;
+	}
+
+	//解析memos，拿到上链数据表id
+	private Integer getCid(String memos)
+	{
+		Integer cid = 0;
+		if(StringUtils.isEmpty(memos))
+		{
+			return cid;
+		}
+		try
+		{
+			Map maps = (Map)JSON.parse(memos);
+			cid =(Integer) maps.get("id");
+			if(cid==null)
+			{
+				cid = 0;
+			}
+		}
+		catch (Exception e)
+		{
+			logger.error("解析错误:"+memos,e);
+			e.printStackTrace();
+		}
+		
+		return cid;
+		
 	}
 
 	@Override

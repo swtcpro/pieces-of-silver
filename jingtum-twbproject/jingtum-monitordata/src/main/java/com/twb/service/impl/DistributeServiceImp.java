@@ -3,21 +3,16 @@ package com.twb.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aliyun.openservices.ons.api.Message;
-import com.aliyun.openservices.ons.api.ONSFactory;
-import com.aliyun.openservices.ons.api.Producer;
-import com.aliyun.openservices.ons.api.PropertyKeyConst;
 import com.aliyun.openservices.ons.api.SendResult;
 import com.jingtongsdk.utils.JingtongRequstConstants;
 import com.twb.entity.DistributeChannel;
@@ -29,6 +24,7 @@ import com.twb.repository.DistributeLogRepository;
 import com.twb.repository.SocketDataRepository;
 import com.twb.repository.TimerDataRepository;
 import com.twb.service.DistributeService;
+import com.twb.service.MqProductService;
 
 @Service
 public class DistributeServiceImp implements DistributeService
@@ -48,23 +44,12 @@ public class DistributeServiceImp implements DistributeService
 	@Autowired
 	private DistributeChannelRepository distributeChannelRepository;
 
-	@Value("${ACCESS_KEY}")
-	private String access_key;
-
-	@Value("${SECRET_KEY}")
-	private String secret_key;
-
-	@Value("${PRODUCER_ID}")
-	private String producer_id;
-
-	@Value("${ONSADDR}")
-	private String onsaddr;
+	@Autowired
+	private MqProductService mqProductServiceImp;
 
 	List<DistributeChannel> distributeChlAll = new ArrayList();
 	List<DistributeChannel> distributeChlOthersNone = new ArrayList();
 	List<DistributeChannel> disChlStartWithFlag = new ArrayList();
-
-	Producer producer;
 
 	// 定义在构造方法完毕后，执行这个初始化方法
 	@PostConstruct
@@ -97,13 +82,6 @@ public class DistributeServiceImp implements DistributeService
 			logger.error("distributeChannelList 获取失败", e);
 		}
 
-		Properties producerProperties = new Properties();
-		producerProperties.setProperty(PropertyKeyConst.ProducerId, producer_id);
-		producerProperties.setProperty(PropertyKeyConst.AccessKey, access_key);
-		producerProperties.setProperty(PropertyKeyConst.SecretKey, secret_key);
-		producerProperties.setProperty(PropertyKeyConst.ONSAddr, onsaddr);
-		producer = ONSFactory.createProducer(producerProperties);
-		producer.start();
 	}
 
 	private void handlerDistributeLog(DistributeLog dl)
@@ -123,7 +101,8 @@ public class DistributeServiceImp implements DistributeService
 				{
 					String memos = dl.getMemos();
 					String flag = dc.getFlag();
-					if (memos != null && memos.length() > 0 &&flag!=null&&flag.length()>0&& memos.startsWith(flag))
+					if (memos != null && memos.length() > 0 && flag != null && flag.length() > 0
+							&& memos.startsWith(flag))
 					{
 						hasSend = true;
 						sendMQ(dl, sendData, dc);
@@ -183,13 +162,10 @@ public class DistributeServiceImp implements DistributeService
 
 	private void sendMQ(DistributeLog dl, String sendData, DistributeChannel dc) throws CloneNotSupportedException
 	{
-		try
+		logger.info("发送，hash:" + dl.getHash());
+		SendResult sendResult = mqProductServiceImp.sendMQ(dc.getTopic(), dc.getTag(), sendData);
+		if (sendResult != null)
 		{
-
-			Message message = new Message(dc.getTopic(), dc.getTag(), sendData.getBytes("UTF-8"));
-			SendResult sendResult = producer.send(message);
-			logger.info("发送成功1，hash:" + dl.getHash() + "Topic is:" + dc.getTopic() + "," + dc.getTag() + " msgId is: "
-					+ sendResult.getMessageId());
 			DistributeLog dlClone = (DistributeLog) dl.clone();
 			dlClone.setTopic(dc.getTopic());
 			dlClone.setTag(dc.getTag());
@@ -197,39 +173,18 @@ public class DistributeServiceImp implements DistributeService
 			dlClone.setMessageid(sendResult.getMessageId());
 			dlClone.setSendResult(DistributeLog.SENDRESULT_SUCCESS);
 			distributeLogRepository.save(dlClone);
-
 		}
-		catch (Exception e)
+		else
 		{
-			logger.error("发送失败1", e);
 
-			try
-			{
-				Message message = new Message(dc.getTopic(), dc.getTag(), sendData.getBytes("UTF-8"));
-				SendResult sendResult = producer.send(message);
-				logger.info("发送成功2，hash:" + dl.getHash() + "Topic is:" + dc.getTopic() + "," + dc.getTag()
-						+ " msgId is: " + sendResult.getMessageId());
-				DistributeLog dlClone = (DistributeLog) dl.clone();
-				dlClone.setTopic(dc.getTopic());
-				dlClone.setTag(dc.getTag());
-				dlClone.setMessageDate(new Date());
-				dlClone.setMessageid(sendResult.getMessageId());
-				dlClone.setSendResult(DistributeLog.SENDRESULT_SUCCESS);
-				distributeLogRepository.save(dlClone);
-			}
-			catch (Exception e1)
-			{
-				logger.error("发送失败2", e);
-				e1.printStackTrace();
-				DistributeLog dlClone = (DistributeLog) dl.clone();
-				dlClone.setTopic(dc.getTopic());
-				dlClone.setTag(dc.getTag());
-				dlClone.setMessageDate(new Date());
-				dlClone.setSendResult(DistributeLog.SENDRESULT_FAIL);
-				distributeLogRepository.save(dlClone);
-			}
-
+			DistributeLog dlClone = (DistributeLog) dl.clone();
+			dlClone.setTopic(dc.getTopic());
+			dlClone.setTag(dc.getTag());
+			dlClone.setMessageDate(new Date());
+			dlClone.setSendResult(DistributeLog.SENDRESULT_FAIL);
+			distributeLogRepository.save(dlClone);
 		}
+
 	}
 
 	@Transactional(rollbackFor = Exception.class)
