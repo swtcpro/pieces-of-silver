@@ -10,9 +10,9 @@ import javax.persistence.*;
 public class CommitchainData
 {
 
-	public static final String RESPONSE_FLAG_TODO = "1";// 1.待响应
-	public static final String RESPONSE_FLAG_SUCCESS = "2";// 2.响应成功
-	public static final String RESPONSE_FLAG_FAIL = "3";// 3.响应失败
+	public static final String RESPONSE_FLAG_TODO = "1";// 1.待上链
+	public static final String RESPONSE_FLAG_SUCCESS = "2";// 2.上链成功
+	public static final String RESPONSE_FLAG_FAIL = "3";// 3.上链失败
 	
 	public static final String CHECK_FLAG_TODO = "1";// 1.待验证
 	public static final String CHECK_FLAG_SUCCESS = "2";// 2.已验证成功 
