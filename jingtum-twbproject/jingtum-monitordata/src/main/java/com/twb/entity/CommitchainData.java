@@ -17,7 +17,9 @@ public class CommitchainData
 	public static final String RESPONSE_FLAG_CHECKFAIL = "5";// 4.数据验证失败
 	
 	public static final String CHECK_FLAG_TODO = "1";// 1.待验证
-	public static final String CHECK_FLAG_SUCCESS = "2";// 2.已验证成功 
+	public static final String CHECK_FLAG_SUCCESS = "2";// 2.已验证成功
+	public static final String CHECK_FLAG_FAIL = "3";// 3.已验证失败
+	public static final String CHECK_FLAG_ERROR = "4";// 4.验证异常
 	
 	public static final String BUSINESS_FLAG_TODO = "1";// 1.待反馈
 	public static final String BUSINESS_FLAG_DONE = "2";// 2.已反馈
@@ -27,7 +29,7 @@ public class CommitchainData
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 自增主键
 	private Integer id;
 
-	private String businessId = ""; // 交易备注
+	private String businessId = ""; // 业务id
 	private String memos = ""; // 交易备注
 	private String counterparty = ""; // 交易对家
 	private String amountvalue = ""; // 交易金额

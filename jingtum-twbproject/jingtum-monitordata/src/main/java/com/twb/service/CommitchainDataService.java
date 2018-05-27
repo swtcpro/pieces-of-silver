@@ -8,18 +8,6 @@ import com.twb.entity.CommitchainData;
 public interface CommitchainDataService {
 	
 	
-	/**
-	 * 
-	 * @Title: handlerTodoCommitchainData   
-	 * @Description: 处理待上链数据,做数据准备
-	 * @param: @return
-	 * @param: @throws Exception      
-	 * @return: List     
-	 * @throws
-	 */
-	List handlerTodoCommitchainData(List<CommitchainData> list) throws Exception;
-	
-	
 	
 	/**
 	 * 
@@ -32,4 +20,56 @@ public interface CommitchainDataService {
 	 */
 	void doingCommitchainData(CommitchainData commitchainData) throws Exception;
 
+	/**
+	 * 
+	 * @Title: savaCdFromMq   
+	 * @Description: 从MQ保存数据到数据库，失败返回null
+	 * @param: @param msg
+	 * @param: @return
+	 * @param: @throws Exception      
+	 * @return: CommitchainData      
+	 * @throws
+	 */
+	CommitchainData savaCdFromMq(String msg) throws Exception;
+
+
+
+	/**
+	 * 
+	 * @Title: getTodoCommitchainData   
+	 * @Description: 获取所有待上链数据
+	 * @param: @return
+	 * @param: @throws Exception      
+	 * @return: List<CommitchainData>      
+	 * @throws
+	 */
+	List<CommitchainData> getTodoCommitchainData() throws Exception;
+
+
+
+	/**
+	 * 
+	 * @Title: getDoingCommitchainData   
+	 * @Description: 获取所有已准备上链数据
+	 * @param: @return
+	 * @param: @throws Exception      
+	 * @return: List<CommitchainData>      
+	 * @throws
+	 */
+	List<CommitchainData> getDoingCommitchainData() throws Exception;
+
+
+	/**
+	 * 
+	 * @Title: handlerTodoCommitchainData   
+	 * @Description: 处理待上链数据,做数据准备
+	 * @param: @param commitchainData
+	 * @param: @return
+	 * @param: @throws Exception      
+	 * @return: CommitchainData      
+	 * @throws
+	 */
+	CommitchainData handlerTodoCommitchainData(CommitchainData commitchainData) throws Exception;
+	
+	
 }

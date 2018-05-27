@@ -25,7 +25,6 @@ import com.jingtongsdk.utils.JingtongRequestUtils;
 import com.twb.entity.CommitchainData;
 import com.twb.repository.CommitchainDataRepository;
 import com.twb.service.CommitchainDataService;
-import com.twb.utils.CommitchainDataQueue;
 
 @Service
 public class CommitchainDataServiceImp implements CommitchainDataService
@@ -47,32 +46,30 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 
 	public static Pattern POSITIVE_NUMBER_PATTERN = Pattern.compile("^[+]{0,1}(\\d+)$|^[+]{0,1}(\\d+\\.\\d+)$");
 
+	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public List<CommitchainData> getTodoCommitchainData() throws Exception
 	{
 		List<CommitchainData> list = commitchainDataRepository
 				.getAllCommitchainDataByState(CommitchainData.RESPONSE_FLAG_TODO);
-		List todoList = new ArrayList();
-		if (list != null && !list.isEmpty())
+		if (list == null)
 		{
-			for (CommitchainData cd : list)
-			{
-				String checkMsg = checkTodoCommitchainData(cd);
-				if (!StringUtils.isEmpty(checkMsg))
-				{
-					cd.setResponseFlag(CommitchainData.RESPONSE_FLAG_CHECKFAIL);
-					cd.setResponseMsg(checkMsg);
-
-				}
-				else
-				{
-					todoList.add(cd);
-				}
-				commitchainDataRepository.save(cd);
-			}
+			list = new ArrayList();
 		}
+		return list;
+	}
+	
+	@Override
+	public List<CommitchainData> getDoingCommitchainData() throws Exception
+	{
+		List<CommitchainData> list = commitchainDataRepository
+				.getAllCommitchainDataByState(CommitchainData.RESPONSE_FLAG_DOING);
 
-		return todoList;
+		if (list == null)
+		{
+			list = new ArrayList();
+		}
+		return list;
 	}
 
 	/**
@@ -134,34 +131,50 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 		return sb.toString();
 	}
 
-	public List<CommitchainData> getDoingCommitchainData() throws Exception
-	{
-		List<CommitchainData> list = commitchainDataRepository
-				.getAllCommitchainDataByState(CommitchainData.RESPONSE_FLAG_DOING);
-
-		if (list == null)
-		{
-			list = new ArrayList();
-		}
-		return list;
-	}
-
+	
+	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public List handlerTodoCommitchainData(List<CommitchainData> list) throws Exception
+	public CommitchainData handlerTodoCommitchainData(CommitchainData commitchainData) throws Exception
 	{
-		if (list == null)
+		if (commitchainData == null)
 		{
-			list = new ArrayList();
+			return null;
 		}
-		for (CommitchainData commitchainData : list)
+		
+		
+		String checkMsg = checkTodoCommitchainData(commitchainData);
+		//数据校验失败
+		if (!StringUtils.isEmpty(checkMsg))
 		{
-			prepareCommitchainData(commitchainData);
-			commitchainData.setResponseFlag(CommitchainData.RESPONSE_FLAG_DOING);
+			commitchainData.setResponseFlag(CommitchainData.RESPONSE_FLAG_CHECKFAIL);
+			commitchainData.setResponseMsg(checkMsg);
+			if(!StringUtils.isEmpty(commitchainData.getBusinessTopic()))
+			{
+				commitchainData.setBusinessFlag(CommitchainData.BUSINESS_FLAG_TODO);
+			}
+			commitchainData.setCheckFlag(CommitchainData.CHECK_FLAG_FAIL);
 			commitchainDataRepository.save(commitchainData);
+			return null;
 		}
-		return list;
+		
+		
+		//准备数据
+		prepareCommitchainData(commitchainData);
+		commitchainData.setResponseFlag(CommitchainData.RESPONSE_FLAG_DOING);
+		commitchainDataRepository.save(commitchainData);
+		
+		
+		return commitchainData;
 	}
 
+	/**
+	 * 
+	 * @Title: prepareCommitchainData   
+	 * @Description: 准备数据
+	 * @param: @param commitchainData      
+	 * @return: void      
+	 * @throws
+	 */
 	private void prepareCommitchainData(CommitchainData commitchainData)
 	{
 		String memos = commitchainData.getMemos();
@@ -182,20 +195,9 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 
 	}
 
-	// @Override
-	// public void handlerDoingCommitchainData() throws Exception
-	// {
-	// if (list == null)
-	// {
-	// list = new ArrayList();
-	// }
-	// for (CommitchainData commitchainData : list)
-	// {
-	// CommitchainDataQueue.add(commitchainData);
-	// }
-	//
-	// }
-
+	/**
+	 * 数据上链
+	 */
 	@Transactional(rollbackFor = Exception.class)
 	public void doingCommitchainData(CommitchainData commitchainData) throws Exception
 	{
@@ -225,7 +227,8 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 		payment.setAmount(amount);
 		payment.setDestination(destination);
 		payment.setSource(address);
-		payment.setMemos(new String[]{ memos });
+		payment.setMemos(new String[]
+		{ memos });
 		ptr.setPayment(payment);
 
 		try
@@ -291,7 +294,55 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 			}
 
 		}
+		
+		//上链数据待确认
+		commitchainData.setCheckFlag(CommitchainData.CHECK_FLAG_TODO);
 		commitchainDataRepository.save(commitchainData);
+	}
+
+	@Transactional(rollbackFor = Exception.class)
+	public CommitchainData savaCdFromMq(String msg) throws Exception
+	{
+		if (StringUtils.isEmpty(msg))
+		{
+			logger.warn("msg is empty:" + msg);
+			return null;
+		}
+		Map maps = (Map) JSON.parse(msg);
+		String counterparty = (String) maps.get("counterparty");
+		String amountvalue = (String) maps.get("amountvalue");
+		String amountcurrency = (String) maps.get("amountcurrency");
+		String amountissuer = (String) maps.get("amountissuer");
+		String memos = (String) maps.get("memos");
+		String businessid = (String) maps.get("businessid");
+
+		String businessTopic = (String) maps.get("businesstopic");// 结果反馈业务系统MQ主题
+		String businessTag = (String) maps.get("businesstag");// 结果反馈业务系统TAG
+
+		// 业务id，唯一索引
+		if (StringUtils.isEmpty(businessid))
+		{
+			logger.warn("businessid is empty:" + msg);
+			return null;
+		}
+
+		CommitchainData cd = new CommitchainData();
+		cd.setCounterparty(counterparty);
+		cd.setAmountvalue(amountvalue);
+		cd.setAmountcurrency(amountcurrency);
+		cd.setAmountissuer(amountissuer);
+		cd.setMemos(memos);
+		cd.setBusinessId(businessid);
+
+		cd.setResponseFlag(CommitchainData.RESPONSE_FLAG_TODO);
+		if (!StringUtils.isEmpty(businessTopic))
+		{
+			cd.setBusinessTopic(businessTopic);
+			cd.setBusinessTag(businessTag);
+		}
+
+		commitchainDataRepository.save(cd);
+		return cd;
 	}
 
 }
