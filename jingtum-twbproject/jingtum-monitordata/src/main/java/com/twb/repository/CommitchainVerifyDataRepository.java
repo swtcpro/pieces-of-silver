@@ -12,7 +12,7 @@ import com.twb.entity.CommitchainVerifyData;
 //继承JpaRepository来完成对数据库的操作
 public interface CommitchainVerifyDataRepository extends JpaRepository<CommitchainVerifyData,Integer>{
 	
-//	@Query(value="select o from CommitchainVerifyData o where state = '"+CommitchainVerifyData.STATE_OPEN+"'")
-//	public List<CommitchainVerifyData> getAllCommitchainVerifyData() throws Exception;
+	@Query(value="select o from CommitchainVerifyData o where checkflag = '"+CommitchainVerifyData.CHECKFLAG_TOCHECK+"'")
+	public List<CommitchainVerifyData> getTocheckCVD() throws Exception;
 	
 }

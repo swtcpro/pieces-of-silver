@@ -27,12 +27,12 @@ public class CommitchainRunnable implements Runnable
 			{
 				CommitchainData cd = CommitchainDataQueue.get();
 				//如果是待上链数据，将数据准备
-				if(cd!=null&&CommitchainData.RESPONSE_FLAG_TODO.equals(cd.getResponseFlag()))
+				if(cd!=null&&CommitchainData.COMMITCHAIN_FLAG_TODO.equals(cd.getCommitchainFlag()))
 				{
 					cd = commitchainDataServiceImp.handlerTodoCommitchainData(cd);
 				}
 				//如果是数据准备完成，开始上链数据，提交上链
-				if (cd!=null&&CommitchainData.RESPONSE_FLAG_DOING.equals(cd.getResponseFlag()))
+				if (cd!=null&&CommitchainData.COMMITCHAIN_FLAG_DOING.equals(cd.getCommitchainFlag()))
 				{
 					commitchainDataServiceImp.doingCommitchainData(cd);
 				}
