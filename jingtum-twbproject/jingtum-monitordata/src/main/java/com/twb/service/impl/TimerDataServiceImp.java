@@ -133,57 +133,11 @@ public class TimerDataServiceImp implements TimerDataService
 			}
 			timerDataRepository.save(timerData);
 			
-			// 成功，并且是出账,添加到上链数据验证表
-			if ("tesSUCCESS".equals(timerData.getResult()) && DistributeChannel.TYPE_SENT.equals(timerData.getType()))
-			{
-				CommitchainVerifyData rvd = new CommitchainVerifyData();
-				rvd.setAmountcurrency(timerData.getAmountcurrency());
-				rvd.setAmountissuer(timerData.getAmountissuer());
-				rvd.setAmountvalue(timerData.getAmountvalue());
-				rvd.setCounterparty(timerData.getCounterparty());
-				rvd.setDate(timerData.getDate());
-				rvd.setFee(timerData.getFee());
-				rvd.setHash(timerData.getHash());
-				String memos = timerData.getMemos();
-				rvd.setMemos(memos);
-				Integer cid = getCid(memos);
-				rvd.setCid(cid);
-				rvd.setResult(timerData.getResult());
-				rvd.setType(timerData.getType());
-				rvd.setCheckflag(CommitchainVerifyData.CHECKFLAG_TOCHECK);
-				commitchainVerifyDataRepository.save(rvd);
-			}
-			
 		}
 		return list;
 	}
 
-	//解析memos，拿到上链数据表id
-	private Integer getCid(String memos)
-	{
-		Integer cid = 0;
-		if(StringUtils.isEmpty(memos))
-		{
-			return cid;
-		}
-		try
-		{
-			Map maps = (Map)JSON.parse(memos);
-			cid =(Integer) maps.get("id");
-			if(cid==null)
-			{
-				cid = 0;
-			}
-		}
-		catch (Exception e)
-		{
-			logger.error("解析错误:"+memos,e);
-			e.printStackTrace();
-		}
-		
-		return cid;
-		
-	}
+	
 
 	@Override
 	public String getLastTranHash() throws Exception

@@ -33,8 +33,6 @@ public class CommitchainListener implements MessageListener
 	@Override
 	public Action consume(Message message, ConsumeContext consumeContext)
 	{
-		System.out.println(
-				new Date() + " Receive message, Topic is:" + message.getTopic() + ", MsgId is:" + message.getMsgID());
 		// 如果想测试消息重投的功能,可以将Action.CommitMessage 替换成Action.ReconsumeLater
 		logger.info(" Receive message, Topic is:" + message.getTopic() + ", MsgId is:" + message.getMsgID());
 
@@ -58,7 +56,7 @@ public class CommitchainListener implements MessageListener
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+//			e.printStackTrace();
 			logger.error("savaCdFromMq", e);
 		}
 		

@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.twb.entity.CommitchainVerifyData;
 import com.twb.entity.TimerData;
+import com.twb.service.CommitchainVerifyService;
 import com.twb.service.TimerDataService;
 
 
@@ -22,6 +24,9 @@ public class TimerDataTask
 
 	@Resource
 	TimerDataService timerDataService;
+	
+	@Resource
+	CommitchainVerifyService CommitchainVerifyServiceImp;
 
 	public static boolean firstRun = true;
 
@@ -71,17 +76,29 @@ public class TimerDataTask
 		
 		logger.info("TimerDataTask.task lastHash"+lastHash);
 		
+		List<TimerData> list =new ArrayList();
 		try
 		{
-			List<TimerData> list = timerDataService.getTranFromJingtong(subscribeAddress,
+			list = timerDataService.getTranFromJingtong(subscribeAddress,
 					lastHash);
 			tobeCheckTranList.addAll(list);
-
 		}
 		catch (Exception e)
 		{
 			logger.error("getTranFromJingtong" ,e);
 		}
+		
+		try
+		{
+			//如果是出账，添加到上链检查队列
+			List<CommitchainVerifyData> cvdList = CommitchainVerifyServiceImp.getCommitchainVerifyData(list);
+			CommitchainVerifyServiceImp.addChainVerifydataQueue(cvdList);
+		}
+		catch (Exception e)
+		{
+			logger.error("getCommitchainVerifyData" ,e);
+		}
+		
 		logger.info("tobeCheckTranList Size:"+tobeCheckTranList.size());
 
 		try

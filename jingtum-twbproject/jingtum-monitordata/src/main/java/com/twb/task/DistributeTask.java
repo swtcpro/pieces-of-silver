@@ -20,7 +20,7 @@ public class DistributeTask
 	final static Logger logger = LoggerFactory.getLogger(DistributeTask.class);
 
 
-	private int threadNum = 5;
+	private int threadNum = 3;
 	
 	@Autowired
 	DistributeService distributeServiceImp;

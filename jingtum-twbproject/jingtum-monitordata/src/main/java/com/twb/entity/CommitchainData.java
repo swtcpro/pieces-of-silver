@@ -10,11 +10,11 @@ import javax.persistence.*;
 public class CommitchainData
 {
 
-	public static final String RESPONSE_FLAG_TODO = "1";// 1.待上链
-	public static final String RESPONSE_FLAG_DOING = "2";// 2.准备上链
-	public static final String RESPONSE_FLAG_SUCCESS = "3";// 3.上链成功
-	public static final String RESPONSE_FLAG_FAIL = "4";// 4.上链失败
-	public static final String RESPONSE_FLAG_CHECKFAIL = "5";// 4.数据验证失败
+	public static final String COMMITCHAIN_FLAG_TODO = "1";// 1.待上链
+	public static final String COMMITCHAIN_FLAG_DOING = "2";// 2.准备上链
+	public static final String COMMITCHAIN_FLAG_SUCCESS = "3";// 3.上链成功
+	public static final String COMMITCHAIN_FLAG_FAIL = "4";// 4.上链失败
+	public static final String COMMITCHAIN_FLAG_CHECKFAIL = "5";// 4.数据验证失败
 	
 	public static final String CHECK_FLAG_TODO = "1";// 1.待验证
 	public static final String CHECK_FLAG_SUCCESS = "2";// 2.已验证成功
@@ -36,15 +36,15 @@ public class CommitchainData
 	private String amountcurrency = ""; // 货币类型
 	private String amountissuer = ""; // 货币发行方
 
-	private String responseFlag = "";// 1.待上链 2.准备上链 3.上链成功 4.上链失败
-	private String responseMsg = "";//响应成功失败等信息
-	private String responseHash = "";//响应的hash
+	private String commitchainFlag = "";// 1.待上链 2.准备上链 3.上链成功 4.上链失败
+	private String commitchainMsg = "";//上链成功失败等信息
+	private String commitchainHash = "";//上链的hash
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date responseData;//响应完成的时间
+	private Date commitchainDate;//上链的时间
 	
 	private String checkFlag = "";//1.待验证 2.已验证成功 
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date checkData;// 验证完成时间
+	private Date checkDate;// 验证完成时间
 	private String businessTopic = "";//结果反馈业务系统MQ主题
 	private String businessTag = "";//结果反馈业务系统TAG
 	private String businessFlag = "";//1.待反馈 2.已反馈3.无需反馈
@@ -104,30 +104,6 @@ public class CommitchainData
 	{
 		this.amountissuer = amountissuer;
 	}
-	public String getResponseFlag()
-	{
-		return responseFlag;
-	}
-	public void setResponseFlag(String responseFlag)
-	{
-		this.responseFlag = responseFlag;
-	}
-	public String getResponseMsg()
-	{
-		return responseMsg;
-	}
-	public void setResponseMsg(String responseMsg)
-	{
-		this.responseMsg = responseMsg;
-	}
-	public String getResponseHash()
-	{
-		return responseHash;
-	}
-	public void setResponseHash(String responseHash)
-	{
-		this.responseHash = responseHash;
-	}
 	
 	public String getCheckFlag()
 	{
@@ -138,22 +114,6 @@ public class CommitchainData
 		this.checkFlag = checkFlag;
 	}
 	
-	public Date getResponseData()
-	{
-		return responseData;
-	}
-	public void setResponseData(Date responseData)
-	{
-		this.responseData = responseData;
-	}
-	public Date getCheckData()
-	{
-		return checkData;
-	}
-	public void setCheckData(Date checkData)
-	{
-		this.checkData = checkData;
-	}
 	public String getBusinessTopic()
 	{
 		return businessTopic;
@@ -177,6 +137,46 @@ public class CommitchainData
 	public void setBusinessFlag(String businessFlag)
 	{
 		this.businessFlag = businessFlag;
+	}
+	public Date getCheckDate()
+	{
+		return checkDate;
+	}
+	public void setCheckDate(Date checkDate)
+	{
+		this.checkDate = checkDate;
+	}
+	public String getCommitchainFlag()
+	{
+		return commitchainFlag;
+	}
+	public void setCommitchainFlag(String commitchainFlag)
+	{
+		this.commitchainFlag = commitchainFlag;
+	}
+	public String getCommitchainMsg()
+	{
+		return commitchainMsg;
+	}
+	public void setCommitchainMsg(String commitchainMsg)
+	{
+		this.commitchainMsg = commitchainMsg;
+	}
+	public String getCommitchainHash()
+	{
+		return commitchainHash;
+	}
+	public void setCommitchainHash(String commitchainHash)
+	{
+		this.commitchainHash = commitchainHash;
+	}
+	public Date getCommitchainDate()
+	{
+		return commitchainDate;
+	}
+	public void setCommitchainDate(Date commitchainDate)
+	{
+		this.commitchainDate = commitchainDate;
 	}
 	
 	

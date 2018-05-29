@@ -1,5 +1,6 @@
 package com.twb.service.impl;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -22,6 +23,8 @@ import com.jingtongsdk.bean.Jingtong.reqrsp.Payment;
 import com.jingtongsdk.bean.Jingtong.reqrsp.PaymentsTransferRequest;
 import com.jingtongsdk.bean.Jingtong.reqrsp.PaymentsTransferResponse;
 import com.jingtongsdk.utils.JingtongRequestUtils;
+import com.jingtongsdk.utils.JingtongRequstConstants;
+import com.twb.data.CommitchainMqData;
 import com.twb.entity.CommitchainData;
 import com.twb.repository.CommitchainDataRepository;
 import com.twb.service.CommitchainDataService;
@@ -51,7 +54,7 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 	public List<CommitchainData> getTodoCommitchainData() throws Exception
 	{
 		List<CommitchainData> list = commitchainDataRepository
-				.getAllCommitchainDataByState(CommitchainData.RESPONSE_FLAG_TODO);
+				.getAllCommitchainDataByState(CommitchainData.COMMITCHAIN_FLAG_TODO);
 		if (list == null)
 		{
 			list = new ArrayList();
@@ -63,7 +66,7 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 	public List<CommitchainData> getDoingCommitchainData() throws Exception
 	{
 		List<CommitchainData> list = commitchainDataRepository
-				.getAllCommitchainDataByState(CommitchainData.RESPONSE_FLAG_DOING);
+				.getAllCommitchainDataByState(CommitchainData.COMMITCHAIN_FLAG_DOING);
 
 		if (list == null)
 		{
@@ -96,7 +99,7 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 			sb.append("交易对家为空 ");
 		}
 
-		if (!POSITIVE_NUMBER_PATTERN.matcher(amountvalue).matches())
+		if (amountvalue==null||!POSITIVE_NUMBER_PATTERN.matcher(amountvalue).matches())
 		{
 			sb.append("金额错误 ");
 		}
@@ -143,24 +146,22 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 		
 		
 		String checkMsg = checkTodoCommitchainData(commitchainData);
-		//数据校验失败
+		//数据校验失败,ResponseFlag失败，CheckFlag已验证失败，结果准备反馈
 		if (!StringUtils.isEmpty(checkMsg))
 		{
-			commitchainData.setResponseFlag(CommitchainData.RESPONSE_FLAG_CHECKFAIL);
-			commitchainData.setResponseMsg(checkMsg);
-			if(!StringUtils.isEmpty(commitchainData.getBusinessTopic()))
-			{
-				commitchainData.setBusinessFlag(CommitchainData.BUSINESS_FLAG_TODO);
-			}
+			commitchainData.setCommitchainFlag(CommitchainData.COMMITCHAIN_FLAG_CHECKFAIL);
+			commitchainData.setCommitchainMsg(checkMsg);
+			commitchainData.setBusinessFlag(CommitchainData.BUSINESS_FLAG_TODO);
 			commitchainData.setCheckFlag(CommitchainData.CHECK_FLAG_FAIL);
+			commitchainData.setCheckDate(new Date());
 			commitchainDataRepository.save(commitchainData);
-			return null;
+			return commitchainData;
 		}
 		
 		
 		//准备数据
 		prepareCommitchainData(commitchainData);
-		commitchainData.setResponseFlag(CommitchainData.RESPONSE_FLAG_DOING);
+		commitchainData.setCommitchainFlag(CommitchainData.COMMITCHAIN_FLAG_DOING);
 		commitchainDataRepository.save(commitchainData);
 		
 		
@@ -236,10 +237,10 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 			PaymentsTransferResponse jtr = (PaymentsTransferResponse) JingtongRequestUtils.sendRequest(ptr);
 			if (jtr.isSuccess() && "tesSUCCESS".equals(jtr.getResult()))
 			{
-				commitchainData.setResponseData(new Date());
-				commitchainData.setResponseHash(jtr.getHash());
-				commitchainData.setResponseMsg(jtr.getMessage());
-				commitchainData.setResponseFlag(CommitchainData.RESPONSE_FLAG_SUCCESS);
+				commitchainData.setCommitchainDate(new Date());
+				commitchainData.setCommitchainHash(jtr.getHash());
+				commitchainData.setCommitchainMsg(jtr.getMessage());
+				commitchainData.setCommitchainFlag(CommitchainData.COMMITCHAIN_FLAG_SUCCESS);
 			}
 			else
 			{
@@ -249,9 +250,9 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 				{
 					msg = jtr.getResult();
 				}
-				commitchainData.setResponseData(new Date());
-				commitchainData.setResponseMsg(msg);
-				commitchainData.setResponseFlag(CommitchainData.RESPONSE_FLAG_FAIL);
+				commitchainData.setCommitchainDate(new Date());
+				commitchainData.setCommitchainMsg(msg);
+				commitchainData.setCommitchainFlag(CommitchainData.COMMITCHAIN_FLAG_FAIL);
 
 			}
 		}
@@ -266,10 +267,10 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 				PaymentsTransferResponse jtr = (PaymentsTransferResponse) JingtongRequestUtils.sendRequest(ptr);
 				if (jtr.isSuccess() && "tesSUCCESS".equals(jtr.getResult()))
 				{
-					commitchainData.setResponseData(new Date());
-					commitchainData.setResponseHash(jtr.getHash());
-					commitchainData.setResponseMsg(jtr.getMessage());
-					commitchainData.setResponseFlag(CommitchainData.RESPONSE_FLAG_SUCCESS);
+					commitchainData.setCommitchainDate(new Date());
+					commitchainData.setCommitchainHash(jtr.getHash());
+					commitchainData.setCommitchainMsg(jtr.getMessage());
+					commitchainData.setCommitchainFlag(CommitchainData.COMMITCHAIN_FLAG_SUCCESS);
 				}
 				else
 				{
@@ -278,18 +279,18 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 					{
 						msg = jtr.getResult();
 					}
-					commitchainData.setResponseData(new Date());
-					commitchainData.setResponseMsg(msg);
-					commitchainData.setResponseFlag(CommitchainData.RESPONSE_FLAG_FAIL);
+					commitchainData.setCommitchainDate(new Date());
+					commitchainData.setCommitchainMsg(msg);
+					commitchainData.setCommitchainFlag(CommitchainData.COMMITCHAIN_FLAG_FAIL);
 				}
 			}
 			catch (Exception e1)
 			{
 				e1.printStackTrace();
 				logger.error("error.." + e1.toString() + "," + Arrays.toString(e1.getStackTrace()));
-				commitchainData.setResponseData(new Date());
-				commitchainData.setResponseMsg(e1.toString());
-				commitchainData.setResponseFlag(CommitchainData.RESPONSE_FLAG_FAIL);
+				commitchainData.setCommitchainDate(new Date());
+				commitchainData.setCommitchainMsg(e1.toString());
+				commitchainData.setCommitchainFlag(CommitchainData.COMMITCHAIN_FLAG_FAIL);
 
 			}
 
@@ -308,33 +309,41 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 			logger.warn("msg is empty:" + msg);
 			return null;
 		}
+		CommitchainMqData cmd = JingtongRequstConstants.PRETTY_PRINT_GSON.fromJson(msg, CommitchainMqData.class);
+		
 		Map maps = (Map) JSON.parse(msg);
-		String counterparty = (String) maps.get("counterparty");
-		String amountvalue = (String) maps.get("amountvalue");
-		String amountcurrency = (String) maps.get("amountcurrency");
-		String amountissuer = (String) maps.get("amountissuer");
-		String memos = (String) maps.get("memos");
-		String businessid = (String) maps.get("businessid");
+		String counterparty = cmd.getCounterparty();
+		double amountvalue = cmd.getAmountvalue();
+		String amountcurrency = cmd.getAmountcurrency();
+		String amountissuer = cmd.getAmountissuer();
+		Map memos = cmd.getMemos();
+		String businessid = cmd.getBusinessid();
 
-		String businessTopic = (String) maps.get("businesstopic");// 结果反馈业务系统MQ主题
-		String businessTag = (String) maps.get("businesstag");// 结果反馈业务系统TAG
+		String businessTopic = cmd.getBusinessTopic();// 结果反馈业务系统MQ主题
+		String businessTag = cmd.getBusinessTag();// 结果反馈业务系统TAG
 
 		// 业务id，唯一索引
 		if (StringUtils.isEmpty(businessid))
 		{
-			logger.warn("businessid is empty:" + msg);
+			logger.error("businessid is empty:" + msg);
 			return null;
 		}
 
+		if(amountvalue<=0)
+		{
+			logger.error("amountvalue<=0:" + msg);
+			return null;
+		}
 		CommitchainData cd = new CommitchainData();
 		cd.setCounterparty(counterparty);
-		cd.setAmountvalue(amountvalue);
+		DecimalFormat decimalFormat = new DecimalFormat("##########.######");//格式化设置 
+		cd.setAmountvalue(decimalFormat.format(amountvalue));
 		cd.setAmountcurrency(amountcurrency);
 		cd.setAmountissuer(amountissuer);
-		cd.setMemos(memos);
+		cd.setMemos(JingtongRequstConstants.PRETTY_PRINT_GSON.toJson(memos));
 		cd.setBusinessId(businessid);
 
-		cd.setResponseFlag(CommitchainData.RESPONSE_FLAG_TODO);
+		cd.setCommitchainFlag(CommitchainData.COMMITCHAIN_FLAG_TODO);
 		if (!StringUtils.isEmpty(businessTopic))
 		{
 			cd.setBusinessTopic(businessTopic);
