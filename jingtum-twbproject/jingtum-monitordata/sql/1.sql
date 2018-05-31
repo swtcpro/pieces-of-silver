@@ -1,3 +1,4 @@
+
 DROP TABLE IF EXISTS commitchain_data;
     CREATE TABLE commitchain_data
     (
