@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.SendResult;
 import com.jingtongsdk.utils.JingtongRequstConstants;
 import com.twb.entity.DistributeChannel;
@@ -162,7 +161,7 @@ public class DistributeServiceImp implements DistributeService
 
 	private void sendMQ(DistributeLog dl, String sendData, DistributeChannel dc) throws CloneNotSupportedException
 	{
-		logger.info("发送，hash:" + dl.getHash());
+		logger.info("发送，hash:" + dl.getHash()+",topic:"+dc.getTopic()+",tag:"+dc.getTag());
 		SendResult sendResult = mqProductServiceImp.sendMQ(dc.getTopic(), dc.getTag(), sendData);
 		if (sendResult != null)
 		{

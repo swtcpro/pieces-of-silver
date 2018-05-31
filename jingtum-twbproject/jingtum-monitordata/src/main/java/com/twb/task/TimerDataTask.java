@@ -59,7 +59,7 @@ public class TimerDataTask
 				tobeCheckTranList = new ArrayList();
 			}
 		}
-		logger.info("tobeCheckTranList Size:"+tobeCheckTranList.size());
+		logger.info("tobeCheckTranList Size1:"+tobeCheckTranList.size());
 		
 		
 		String lastHash = "";
@@ -99,7 +99,7 @@ public class TimerDataTask
 			logger.error("getCommitchainVerifyData" ,e);
 		}
 		
-		logger.info("tobeCheckTranList Size:"+tobeCheckTranList.size());
+		logger.info("tobeCheckTranList Size2:"+tobeCheckTranList.size());
 
 		try
 		{

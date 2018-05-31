@@ -1,5 +1,6 @@
 package com.twb.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.twb.entity.CommitchainVerifyData;
@@ -52,4 +53,24 @@ public interface CommitchainVerifyService {
 	 * @throws
 	 */
 	void doingTocheckCVD(CommitchainVerifyData cvd)throws Exception;
+	
+	/**
+	 * 
+	 * @Title: getLastDate   
+	 * @Description: 获取最后一条数据的时间
+	 * @param: @return      
+	 * @return: Date      
+	 * @throws
+	 */
+	Date getLastDate()throws Exception;
+
+	/**
+	 * 
+	 * @Title: commitChainFailCheck   
+	 * @Description: 上链失败检查
+	 * @param: @param lastDate      
+	 * @return: void      
+	 * @throws
+	 */
+	void commitChainFailCheck(Date lastDate)  throws Exception;
 }

@@ -17,13 +17,14 @@ public class CommitchainData
 	public static final String COMMITCHAIN_FLAG_CHECKFAIL = "5";// 4.数据验证失败
 	
 	public static final String CHECK_FLAG_TODO = "1";// 1.待验证
-	public static final String CHECK_FLAG_SUCCESS = "2";// 2.已验证成功
-	public static final String CHECK_FLAG_FAIL = "3";// 3.已验证失败
+	public static final String CHECK_FLAG_SUCCESS = "2";// 2.已验证上链成功
+	public static final String CHECK_FLAG_FAIL = "3";// 3.已验证上链失败
 	public static final String CHECK_FLAG_ERROR = "4";// 4.验证异常
 	
 	public static final String BUSINESS_FLAG_TODO = "1";// 1.待反馈
-	public static final String BUSINESS_FLAG_DONE = "2";// 2.已反馈
-	public static final String BUSINESS_FLAG_NONE = "3";// 3.无需反馈
+	public static final String BUSINESS_FLAG_SUCCESS = "2";// 2.已反馈,成功
+	public static final String BUSINESS_FLAG_FAIL = "3";// 3.已反馈，失败
+	public static final String BUSINESS_FLAG_NONE = "4";// 4.无需反馈
 
 	@Id // 这是一个主键
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 自增主键
@@ -42,12 +43,16 @@ public class CommitchainData
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date commitchainDate;//上链的时间
 	
-	private String checkFlag = "";//1.待验证 2.已验证成功 
+	private String checkFlag = "";//1.待验证 2.已验证成功 3.已验证失败4.已验证异常
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date checkDate;// 验证完成时间
 	private String businessTopic = "";//结果反馈业务系统MQ主题
 	private String businessTag = "";//结果反馈业务系统TAG
 	private String businessFlag = "";//1.待反馈 2.已反馈3.无需反馈
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date  businessMqdate;
+	private String business_mqid   = "";
 	public Integer getId()
 	{
 		return id;
@@ -177,6 +182,22 @@ public class CommitchainData
 	public void setCommitchainDate(Date commitchainDate)
 	{
 		this.commitchainDate = commitchainDate;
+	}
+	public Date getBusinessMqdate()
+	{
+		return businessMqdate;
+	}
+	public void setBusinessMqdate(Date businessMqdate)
+	{
+		this.businessMqdate = businessMqdate;
+	}
+	public String getBusiness_mqid()
+	{
+		return business_mqid;
+	}
+	public void setBusiness_mqid(String business_mqid)
+	{
+		this.business_mqid = business_mqid;
 	}
 	
 	

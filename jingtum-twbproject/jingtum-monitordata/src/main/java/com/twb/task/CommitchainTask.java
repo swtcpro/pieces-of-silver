@@ -61,7 +61,9 @@ public class CommitchainTask
 		try
 		{
 			List<CommitchainData> list1 = commitchainDataServiceImp.getTodoCommitchainData();
+			logger.info("CommitchainTask init list1 size "+list1.size());
 			List<CommitchainData> list2 = commitchainDataServiceImp.getDoingCommitchainData();
+			logger.info("CommitchainTask init list2 size "+list2.size());
 			for(CommitchainData cd : list1)
 			{
 				CommitchainDataQueue.add(cd);

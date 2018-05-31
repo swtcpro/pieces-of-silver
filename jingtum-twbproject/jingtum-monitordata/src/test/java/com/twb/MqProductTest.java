@@ -83,7 +83,7 @@ public class MqProductTest
 			cmd.setAmountcurrency("SWT");
 			cmd.setAmountissuer("");
 			cmd.setAmountvalue(Math.random());
-			cmd.setBusinessid("testd"+i);
+			cmd.setBusinessid("testdd"+i);
 			cmd.setBusinessTag("testback");
 			cmd.setBusinessTopic("jingtum");
 			cmd.setCounterparty("jGkxobBPv8Wc4o65Asq9WfTYKEpui1JY9t");

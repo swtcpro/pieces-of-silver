@@ -19,4 +19,10 @@ public interface CommitchainDataRepository extends JpaRepository<CommitchainData
 	@Query(value="select o from CommitchainData o where id=:id")
 	public CommitchainData getCommitchainDataById(@Param("id") Integer id) throws Exception;
 	
+	@Query(value="select o from CommitchainData o where checkFlag=:checkFlag")
+	public List<CommitchainData> getCdBycheckFlag(@Param("checkFlag") String checkFlag) throws Exception;
+	
+	@Query(value="select o from CommitchainData o where checkFlag in ('"+CommitchainData.CHECK_FLAG_SUCCESS+"','"+CommitchainData.CHECK_FLAG_FAIL+"')")
+	public List<CommitchainData> getResponseCommitchainData() throws Exception;
+	
 }

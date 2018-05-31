@@ -1,7 +1,5 @@
 package com.twb.service.impl;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -16,8 +14,6 @@ import com.aliyun.openservices.ons.api.ONSFactory;
 import com.aliyun.openservices.ons.api.Producer;
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
 import com.aliyun.openservices.ons.api.SendResult;
-import com.twb.entity.DistributeChannel;
-import com.twb.entity.DistributeLog;
 import com.twb.service.MqProductService;
 
 @Service

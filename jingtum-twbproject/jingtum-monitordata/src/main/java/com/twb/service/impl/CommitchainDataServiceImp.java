@@ -139,14 +139,16 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 	@Override
 	public CommitchainData handlerTodoCommitchainData(CommitchainData commitchainData) throws Exception
 	{
+		
 		if (commitchainData == null)
 		{
 			return null;
 		}
 		
-		
+		logger.info("handlerTodoCommitchainData"+commitchainData.getId());
 		String checkMsg = checkTodoCommitchainData(commitchainData);
 		//数据校验失败,ResponseFlag失败，CheckFlag已验证失败，结果准备反馈
+		logger.info("handlerTodoCommitchainData,checkMsg "+checkMsg);
 		if (!StringUtils.isEmpty(checkMsg))
 		{
 			commitchainData.setCommitchainFlag(CommitchainData.COMMITCHAIN_FLAG_CHECKFAIL);
@@ -157,7 +159,6 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 			commitchainDataRepository.save(commitchainData);
 			return commitchainData;
 		}
-		
 		
 		//准备数据
 		prepareCommitchainData(commitchainData);
@@ -178,7 +179,9 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 	 */
 	private void prepareCommitchainData(CommitchainData commitchainData)
 	{
+		
 		String memos = commitchainData.getMemos();
+		logger.info("begin"+memos);
 		if (StringUtils.isEmpty(memos))
 		{
 			Map map = new HashMap();
@@ -193,6 +196,7 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 			String str = JSON.toJSONString(maps);
 			commitchainData.setMemos(str);
 		}
+		logger.info("end"+memos);
 
 	}
 
@@ -234,6 +238,7 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 
 		try
 		{
+			logger.info("上链1");
 			PaymentsTransferResponse jtr = (PaymentsTransferResponse) JingtongRequestUtils.sendRequest(ptr);
 			if (jtr.isSuccess() && "tesSUCCESS".equals(jtr.getResult()))
 			{
@@ -261,8 +266,8 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 			logger.error("error.." + e.toString() + "," + Arrays.toString(e.getStackTrace()));
 			try
 			{
+				logger.info("上链2");
 				// 异常，用同一Client_id再次支付，如果之前支付过，这次会失败，并且提示client_id已使用。
-				ptr.setClient_id(client_id_pre + commitchainData.getId());
 				// 再试一次
 				PaymentsTransferResponse jtr = (PaymentsTransferResponse) JingtongRequestUtils.sendRequest(ptr);
 				if (jtr.isSuccess() && "tesSUCCESS".equals(jtr.getResult()))
@@ -348,6 +353,11 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 		{
 			cd.setBusinessTopic(businessTopic);
 			cd.setBusinessTag(businessTag);
+			cd.setBusinessFlag(CommitchainData.BUSINESS_FLAG_TODO);
+		}
+		else
+		{
+			cd.setBusinessFlag(CommitchainData.BUSINESS_FLAG_NONE);
 		}
 
 		commitchainDataRepository.save(cd);

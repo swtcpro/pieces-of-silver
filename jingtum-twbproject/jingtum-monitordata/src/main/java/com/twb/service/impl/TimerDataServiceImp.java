@@ -4,22 +4,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
-import com.aliyun.openservices.shade.com.alibaba.fastjson.JSON;
 import com.jingtongsdk.bean.Jingtong.reqrsp.Transaction;
 import com.jingtongsdk.bean.Jingtong.reqrsp.TransactionAmount;
 import com.jingtongsdk.bean.Jingtong.reqrsp.TransactionsRecordRequest;
 import com.jingtongsdk.bean.Jingtong.reqrsp.TransactionsRecordResponse;
 import com.jingtongsdk.utils.JingtongRequestUtils;
-import com.twb.entity.CommitchainVerifyData;
 import com.twb.entity.DistributeChannel;
 import com.twb.entity.TimerData;
 import com.twb.repository.CommitchainVerifyDataRepository;
@@ -41,11 +37,6 @@ public class TimerDataServiceImp implements TimerDataService
 	private CommitchainVerifyDataRepository commitchainVerifyDataRepository;
 	
 
-	@Transactional(rollbackFor = Exception.class)
-	public void handlerSubscribeMsg(String msg) throws Exception
-	{
-
-	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public List<TimerData> getTranFromJingtong(String address, String lastHash) throws Exception
