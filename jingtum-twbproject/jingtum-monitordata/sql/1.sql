@@ -12,17 +12,21 @@ amountissuer varchar(34) COLLATE utf8_unicode_ci COMMENT '货币发行方',
 commitchain_flag varchar(2) COLLATE utf8_unicode_ci NOT NULL COMMENT '1.待上链 2.准备上链 3.上链成功 4.上链失败5.数据校验失败',
 commitchain_msg varchar(200) COLLATE utf8_unicode_ci COMMENT '上链成功失败等信息',
 commitchain_hash varchar(64) COLLATE utf8_unicode_ci COMMENT '上链的hash',
-commitchain_date datetime COMMENT '上链时间',
-check_flag varchar(2) COLLATE utf8_unicode_ci COMMENT '1.待验证 2.已验证成功 3.验证失败4.验证异常',
-check_date datetime COMMENT '验证完成时间',
+commitchain_date datetime COMMENT '上链提交时间',
+
+check_flag varchar(2) COLLATE utf8_unicode_ci COMMENT '1.待验证 2.已验证成功 3.已验证失败4.验证异常',
+check_date datetime COMMENT '验证完成时间，如果成功，是上链成功时间否则',
 
 business_topic  varchar(50) COLLATE utf8_unicode_ci COMMENT '结果反馈业务系统MQ主题',
 business_tag  varchar(50) COLLATE utf8_unicode_ci COMMENT '结果反馈业务系统TAG',
-business_flag  varchar(2) COLLATE utf8_unicode_ci COMMENT '1.待反馈 2.已反馈 3.无需反馈'
+business_flag  varchar(2) COLLATE utf8_unicode_ci COMMENT '1.待反馈 2.已反馈 成功3.已反馈失败4.无需反馈',
+business_mqdate datetime COMMENT '反馈时间',
+business_mqid  varchar(50) COLLATE utf8_unicode_ci  COMMENT '反馈消息id'
     ) ENGINE = InnoDB  COMMENT '上链数据表';
 
  ALTER TABLE commitchain_data ADD CONSTRAINT uc_commitchain_data  UNIQUE (`business_id`) ;
 
+ALTER TABLE commitchain_data  ADD INDEX index_commitchain_data_businessflag     ( `business_flag` ) ;
 
 
 DROP TABLE IF EXISTS commitchain_verify_data;
