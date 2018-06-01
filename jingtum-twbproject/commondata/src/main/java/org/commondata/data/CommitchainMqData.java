@@ -1,4 +1,4 @@
-package com.twb.data;
+package org.commondata.data;
 
 import java.util.HashMap;
 import java.util.Map;

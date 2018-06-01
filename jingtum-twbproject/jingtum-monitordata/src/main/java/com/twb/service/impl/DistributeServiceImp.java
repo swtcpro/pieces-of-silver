@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.commondata.data.DistributeMqData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +88,21 @@ public class DistributeServiceImp implements DistributeService
 	{
 		String sendData = JingtongRequstConstants.PRETTY_PRINT_GSON.toJson(dl);
 		logger.info("handlerDistributeLog sendData:" + sendData);
-
+		
+		DistributeMqData dmd = new DistributeMqData();
+		dmd.setAmountcurrency(dl.getAmountcurrency());
+		dmd.setAmountissuer(dl.getAmountissuer());
+		dmd.setAmountvalue(dl.getAmountvalue());
+		dmd.setCounterparty(dl.getCounterparty());
+		dmd.setDate(dl.getDate());
+		dmd.setDistributeType(dl.getDistributeType());
+		dmd.setFee(dl.getFee());
+		dmd.setHash(dl.getHash());
+		dmd.setId(dl.getId());
+		dmd.setMemos(dl.getMemos());
+		dmd.setResult(dl.getResult());
+		dmd.setType(dl.getType());
+		
 		boolean hasSend = false;
 
 		// 普通条件过滤，发送MQ
@@ -104,7 +119,7 @@ public class DistributeServiceImp implements DistributeService
 							&& memos.startsWith(flag))
 					{
 						hasSend = true;
-						sendMQ(dl, sendData, dc);
+						sendMQ(dl, dmd, dc);
 					}
 
 				}
@@ -126,7 +141,7 @@ public class DistributeServiceImp implements DistributeService
 					DistributeChannel dc = distributeChlOthersNone.get(i);
 					if (dl.getType().equals(dc.getType()))
 					{
-						sendMQ(dl, sendData, dc);
+						sendMQ(dl, dmd, dc);
 					}
 
 				}
@@ -146,7 +161,7 @@ public class DistributeServiceImp implements DistributeService
 				DistributeChannel dc = distributeChlAll.get(i);
 				if (dl.getType().equals(dc.getType()))
 				{
-					sendMQ(dl, sendData, dc);
+					sendMQ(dl, dmd, dc);
 				}
 
 			}
@@ -159,10 +174,10 @@ public class DistributeServiceImp implements DistributeService
 
 	}
 
-	private void sendMQ(DistributeLog dl, String sendData, DistributeChannel dc) throws CloneNotSupportedException
+	private void sendMQ(DistributeLog dl, DistributeMqData dmd, DistributeChannel dc) throws CloneNotSupportedException
 	{
 		logger.info("发送，hash:" + dl.getHash()+",topic:"+dc.getTopic()+",tag:"+dc.getTag());
-		SendResult sendResult = mqProductServiceImp.sendMQ(dc.getTopic(), dc.getTag(), sendData);
+		SendResult sendResult = mqProductServiceImp.sendMQ(dc.getTopic(), dc.getTag(), dmd);
 		if (sendResult != null)
 		{
 			DistributeLog dlClone = (DistributeLog) dl.clone();

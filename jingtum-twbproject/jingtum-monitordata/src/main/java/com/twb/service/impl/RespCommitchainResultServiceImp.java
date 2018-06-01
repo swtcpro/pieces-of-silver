@@ -3,6 +3,7 @@ package com.twb.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.commondata.data.CommitChainRespMqData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.aliyun.openservices.ons.api.SendResult;
 import com.jingtongsdk.utils.JingtongRequstConstants;
-import com.twb.data.CommitChainRespMqData;
 import com.twb.entity.CommitchainData;
 import com.twb.repository.CommitchainDataRepository;
 import com.twb.service.MqProductService;
@@ -57,7 +57,7 @@ public class RespCommitchainResultServiceImp implements RespCommitchainResultSer
 				ccrmd.setCheckchainDate(cd.getCheckDate());
 				ccrmd.setCheckFlag(cd.getCheckFlag());
 				ccrmd.setMemos(cd.getMemos());
-				SendResult sr = mqProductServiceImp.sendMQ(topic, tag, JingtongRequstConstants.PRETTY_PRINT_GSON.toJson(ccrmd));
+				SendResult sr = mqProductServiceImp.sendMQ(topic, tag, ccrmd);
 				if(sr!=null)
 				{
 					logger.info("反馈成功");

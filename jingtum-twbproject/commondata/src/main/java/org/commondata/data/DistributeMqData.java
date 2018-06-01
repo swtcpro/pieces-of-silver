@@ -1,37 +1,11 @@
-package com.twb.entity;
+package org.commondata.data;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.jingtongsdk.bean.Jingtong.Exclude;
-
-//使用JPA注解配置映射关系
-@Entity // 告诉JPA这是一个实体类（和数据表映射的类）
-@Table(name = "distribute_log") // @Table来指定和哪个数据表对应;如果省略默认表名就是user；
-public class DistributeLog implements Cloneable
+public class DistributeMqData
 {
-
-	public static final String DISTRIBUTETYPE_SOCKET = "1";// 1socket
-	public static final String DISTRIBUTETYPE_TIMER = "2";// 2.定时任务
-
-	public static final String SENDRESULT_FAIL = "0";// 0.发送失败
-	public static final String SENDRESULT_SUCCESS = "1";// 1.发送成功
-	
-	
-	@Id // 这是一个主键
-	@GeneratedValue(strategy = GenerationType.IDENTITY) // 自增主键
 	private Integer id;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "date")
 	private Date date; // 交易时间
 
 	private String hash=""; // 交易hash
@@ -45,16 +19,6 @@ public class DistributeLog implements Cloneable
 	private String amountissuer=""; // 货币发行方
 	
 	private String distributeType="";// 1.socket数据分发 2.定时任务数据分发
-
-	private String messageid ="";//消息id
-	private String topic="";// 主题
-	private String tag ="";//标签
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "message_date")
-	private Date messageDate ; // 消息队列发送时间
-	
-	private String sendResult="";//发送结果
 
 	public Integer getId()
 	{
@@ -123,7 +87,6 @@ public class DistributeLog implements Cloneable
 
 	public void setMemos(String memos)
 	{
-		
 		this.memos = memos;
 	}
 
@@ -175,61 +138,6 @@ public class DistributeLog implements Cloneable
 	public void setDistributeType(String distributeType)
 	{
 		this.distributeType = distributeType;
-	}
-
-	public String getMessageid()
-	{
-		return messageid;
-	}
-
-	public void setMessageid(String messageid)
-	{
-		this.messageid = messageid;
-	}
-
-	public String getTopic()
-	{
-		return topic;
-	}
-
-	public void setTopic(String topic)
-	{
-		this.topic = topic;
-	}
-
-	public String getTag()
-	{
-		return tag;
-	}
-
-	public void setTag(String tag)
-	{
-		this.tag = tag;
-	}
-
-	public Date getMessageDate()
-	{
-		return messageDate;
-	}
-
-	public void setMessageDate(Date messageDate)
-	{
-		this.messageDate = messageDate;
-	}
-
-	public Object clone() throws CloneNotSupportedException  
-    {  
-        return super.clone();  
-    }
-
-	public String getSendResult()
-	{
-		return sendResult;
-	}
-
-	public void setSendResult(String sendResult)
-	{
-		this.sendResult = sendResult;
 	}
 	
 	

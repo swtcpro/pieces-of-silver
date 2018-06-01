@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.commondata.data.CommitchainMqData;
+import org.commondata.utils.MQUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,6 @@ import com.jingtongsdk.bean.Jingtong.reqrsp.PaymentsTransferRequest;
 import com.jingtongsdk.bean.Jingtong.reqrsp.PaymentsTransferResponse;
 import com.jingtongsdk.utils.JingtongRequestUtils;
 import com.jingtongsdk.utils.JingtongRequstConstants;
-import com.twb.data.CommitchainMqData;
 import com.twb.entity.CommitchainData;
 import com.twb.repository.CommitchainDataRepository;
 import com.twb.service.CommitchainDataService;
@@ -314,7 +315,7 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 			logger.warn("msg is empty:" + msg);
 			return null;
 		}
-		CommitchainMqData cmd = JingtongRequstConstants.PRETTY_PRINT_GSON.fromJson(msg, CommitchainMqData.class);
+		CommitchainMqData cmd = MQUtils.getCommitchainMqData(msg);
 		
 		Map maps = (Map) JSON.parse(msg);
 		String counterparty = cmd.getCounterparty();

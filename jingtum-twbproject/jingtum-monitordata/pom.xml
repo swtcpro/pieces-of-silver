@@ -53,13 +53,17 @@
 			<artifactId>jingtum-sdk</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.jingtum</groupId>
+			<artifactId>commondata</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.aliyun.openservices</groupId>
 			<artifactId>ons-client</artifactId>
 			<version>1.7.7.Final</version>
-			
-			
 		</dependency>
 
 

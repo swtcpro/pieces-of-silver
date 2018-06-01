@@ -4,12 +4,15 @@ import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 
+import org.commondata.data.CommitChainRespMqData;
+import org.commondata.data.CommitchainMqData;
+import org.commondata.data.DistributeMqData;
+import org.commondata.utils.MQUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.ONSFactory;
 import com.aliyun.openservices.ons.api.Producer;
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
@@ -51,41 +54,26 @@ public class MqProductServiceImp implements MqProductService
 
 	
 	
-	@Override
 	public SendResult sendMQ(String topic, String tag, String data)
 	{
-		try
-		{
-
-			Message message = new Message(topic,tag, data.getBytes("UTF-8"));
-			SendResult sendResult = producer.send(message);
-			logger.info("发送成功1，" + "Topic is:" + topic + "," + tag + " msgId is: "
-					+ sendResult.getMessageId());
-			return sendResult;
-
-		}
-		catch (Exception e)
-		{
-			logger.error("发送失败1", e);
-
-			try
-			{
-				Message message = new Message(topic,tag, data.getBytes("UTF-8"));
-				SendResult sendResult = producer.send(message);
-				logger.info("发送成功2，" + "Topic is:" + topic + "," + tag + " msgId is: "
-						+ sendResult.getMessageId());
-				return sendResult;
-			}
-			catch (Exception e1)
-			{
-				logger.error("发送失败2", e);
-				e1.printStackTrace();
-				return null;
-			}
-
-		}
+		return MQUtils.sendMQ(producer, topic, tag, data);
 	}
 
+	@Override
+	public SendResult sendMQ(String topic, String tag, CommitchainMqData data)
+	{
+		return MQUtils.sendMQ(producer, topic, tag, data);
+	}
+	@Override
+	public SendResult sendMQ(String topic, String tag, CommitChainRespMqData data)
+	{
+		return MQUtils.sendMQ(producer, topic, tag, data);
+	}
+	@Override
+	public SendResult sendMQ(String topic, String tag, DistributeMqData data)
+	{
+		return MQUtils.sendMQ(producer, topic, tag, data);
+	}
 	
 
 }

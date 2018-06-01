@@ -3,6 +3,7 @@ package com.twb;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.commondata.data.CommitchainMqData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.aliyun.openservices.ons.api.SendResult;
 import com.jingtongsdk.utils.JingtongRequstConstants;
-import com.twb.data.CommitchainMqData;
 import com.twb.service.MqProductService;
 
 @SpringBootTest(classes = JingtongMonitordataApplication.class) 
@@ -41,15 +41,15 @@ public class MqProductTest
 	public void testMqCommitChain() throws Exception
 	{
 		System.out.println("123");
-		SendResult sr1 = mqProductServiceImp.sendMQ(topic, tag, "test");
-		SendResult sr2 = mqProductServiceImp.sendMQ(topic, tag, "");
-		SendResult sr3 = mqProductServiceImp.sendMQ(topic, tag, "{}");
-		SendResult sr4 = mqProductServiceImp.sendMQ(topic, tag, "{\"deptid\":\"7D32F48DCC6E4C32B122336C5450C342\"}");
-		SendResult sr5 = mqProductServiceImp.sendMQ(topic, tag, "{\"id\":\"7D32F48DCC6E4C32B122336C5450C342\"}");
-		
-		SendResult sr6 = mqProductServiceImp.sendMQ(topic, tag, "{\"businessid\":\"7D32F48DCC6E4C32B122336C5450C342\"}");
-		
-		SendResult sr7 = mqProductServiceImp.sendMQ(topic, tag, "{\"businessid\":\"7D32F48DCC6E4C32B122336C5450C342\",\"id\":\"7D32F48DCC6E4C32B122336C5450C342\"}");
+//		SendResult sr1 = mqProductServiceImp.sendMQ(topic, tag, "test");
+//		SendResult sr2 = mqProductServiceImp.sendMQ(topic, tag, "");
+//		SendResult sr3 = mqProductServiceImp.sendMQ(topic, tag, "{}");
+//		SendResult sr4 = mqProductServiceImp.sendMQ(topic, tag, "{\"deptid\":\"7D32F48DCC6E4C32B122336C5450C342\"}");
+//		SendResult sr5 = mqProductServiceImp.sendMQ(topic, tag, "{\"id\":\"7D32F48DCC6E4C32B122336C5450C342\"}");
+//		
+//		SendResult sr6 = mqProductServiceImp.sendMQ(topic, tag, "{\"businessid\":\"7D32F48DCC6E4C32B122336C5450C342\"}");
+//		
+//		SendResult sr7 = mqProductServiceImp.sendMQ(topic, tag, "{\"businessid\":\"7D32F48DCC6E4C32B122336C5450C342\",\"id\":\"7D32F48DCC6E4C32B122336C5450C342\"}");
 		
 //		SendResult sr8 = mqProductServiceImp.sendMQ(topic, tag, "{\"id\":\"7D32F48DCC6E4C32B122336C5450C342\"}");
 		Thread.sleep(600000);
@@ -70,20 +70,20 @@ public class MqProductTest
 		memos.put("aa", "11");
 		cmd.setMemos(memos);
 		String msg = JingtongRequstConstants.PRETTY_PRINT_GSON.toJson(cmd);
-		SendResult sr = mqProductServiceImp.sendMQ(topic, tag, msg);
+		SendResult sr = mqProductServiceImp.sendMQ(topic, tag, cmd);
 		Thread.sleep(600000);
 	}
 	
 	@Test
 	public void testMqCommitChain3() throws Exception
 	{
-		for(int i=1;i<1000;i++)
+		for(int i=1;i<10;i++)
 		{
 			CommitchainMqData cmd = new CommitchainMqData();
 			cmd.setAmountcurrency("SWT");
 			cmd.setAmountissuer("");
 			cmd.setAmountvalue(Math.random());
-			cmd.setBusinessid("testdd"+i);
+			cmd.setBusinessid("testdaa"+i);
 			cmd.setBusinessTag("testback");
 			cmd.setBusinessTopic("jingtum");
 			cmd.setCounterparty("jGkxobBPv8Wc4o65Asq9WfTYKEpui1JY9t");
@@ -91,7 +91,7 @@ public class MqProductTest
 			memos.put("test", "test");
 			cmd.setMemos(memos);
 			String msg = JingtongRequstConstants.PRETTY_PRINT_GSON.toJson(cmd);
-			SendResult sr = mqProductServiceImp.sendMQ(topic, tag, msg);
+			SendResult sr = mqProductServiceImp.sendMQ(topic, tag, cmd);
 		}
 		
 		Thread.sleep(6000000);
