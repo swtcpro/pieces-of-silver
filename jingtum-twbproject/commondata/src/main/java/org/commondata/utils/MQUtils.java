@@ -123,5 +123,18 @@ public class MQUtils
 		return CommonConstants.PRETTY_PRINT_GSON.fromJson(data, DistributeMqData.class);
 	}
 	
+	public static <T> T fromJson(String data,Class<T> cla)
+	{
+		if(data==null||data.length()==0)
+		{
+			return null;
+		}
+		return CommonConstants.PRETTY_PRINT_GSON.fromJson(data, cla);
+	}
+	
+	public static String toJson(Object obj)
+	{
+		return CommonConstants.PRETTY_PRINT_GSON.toJson(obj);
+	}
 	
 }

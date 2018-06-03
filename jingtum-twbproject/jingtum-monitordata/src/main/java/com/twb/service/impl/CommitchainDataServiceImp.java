@@ -25,7 +25,6 @@ import com.jingtongsdk.bean.Jingtong.reqrsp.Payment;
 import com.jingtongsdk.bean.Jingtong.reqrsp.PaymentsTransferRequest;
 import com.jingtongsdk.bean.Jingtong.reqrsp.PaymentsTransferResponse;
 import com.jingtongsdk.utils.JingtongRequestUtils;
-import com.jingtongsdk.utils.JingtongRequstConstants;
 import com.twb.entity.CommitchainData;
 import com.twb.repository.CommitchainDataRepository;
 import com.twb.service.CommitchainDataService;
@@ -346,7 +345,7 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 		cd.setAmountvalue(decimalFormat.format(amountvalue));
 		cd.setAmountcurrency(amountcurrency);
 		cd.setAmountissuer(amountissuer);
-		cd.setMemos(JingtongRequstConstants.PRETTY_PRINT_GSON.toJson(memos));
+		cd.setMemos(MQUtils.toJson(memos));
 		cd.setBusinessId(businessid);
 
 		cd.setCommitchainFlag(CommitchainData.COMMITCHAIN_FLAG_TODO);

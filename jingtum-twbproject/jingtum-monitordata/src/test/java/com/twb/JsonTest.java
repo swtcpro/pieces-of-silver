@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.commondata.data.CommitchainMqData;
+import org.commondata.utils.MQUtils;
 
 import com.jingtongsdk.utils.JingtongRequstConstants;
 import com.twb.entity.DistributeLog;
@@ -44,7 +45,7 @@ public class JsonTest extends TestCase
 		System.out.println(cmd);
 		
 		msg ="{\"counterparty1\":\"counterparty\",\"amountvalue1\":\"amountvalue\",\"amountcurrency\":\"setAmountcurrency\",\"amountissuer\":\"setAmountissuer\",\"memos\":{\"aa\":\"11\"},\"businessid\":\"businessid\",\"business_topic\":\"businessTopic\",\"business_tag\":\"businessTag\"}";
-		cmd = JingtongRequstConstants.PRETTY_PRINT_GSON.fromJson(msg, CommitchainMqData.class);
+		cmd = MQUtils.fromJson(msg, CommitchainMqData.class);
 		
 		System.out.println(cmd);
 		

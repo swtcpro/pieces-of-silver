@@ -69,7 +69,6 @@ public class MqProductTest
 		Map memos = new HashMap();
 		memos.put("aa", "11");
 		cmd.setMemos(memos);
-		String msg = JingtongRequstConstants.PRETTY_PRINT_GSON.toJson(cmd);
 		SendResult sr = mqProductServiceImp.sendMQ(topic, tag, cmd);
 		Thread.sleep(600000);
 	}
@@ -90,7 +89,6 @@ public class MqProductTest
 			Map memos = new HashMap();
 			memos.put("test", "test");
 			cmd.setMemos(memos);
-			String msg = JingtongRequstConstants.PRETTY_PRINT_GSON.toJson(cmd);
 			SendResult sr = mqProductServiceImp.sendMQ(topic, tag, cmd);
 		}
 		

@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class DistributeMqData
 {
-	private Integer id;
+	private String id;
 
 	private Date date; // 交易时间
 
@@ -20,12 +20,13 @@ public class DistributeMqData
 	
 	private String distributeType="";// 1.socket数据分发 2.定时任务数据分发
 
-	public Integer getId()
+	
+	public String getId()
 	{
 		return id;
 	}
 
-	public void setId(Integer id)
+	public void setId(String id)
 	{
 		this.id = id;
 	}

@@ -3,6 +3,7 @@ package com.twb.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.commondata.utils.MQUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class SocketDataServiceImp implements SocketDataService
 	@Transactional(rollbackFor = Exception.class)
 	public SocketData handlerSubscribeMsg(String msg) throws Exception
 	{
-		SubscribeData sd = JingtongRequstConstants.PRETTY_PRINT_GSON.fromJson(msg, SubscribeData.class);
+		SubscribeData sd = MQUtils.fromJson(msg, SubscribeData.class);
 		if (sd == null)
 		{
 			logger.error("SubscribeData is null," + msg);

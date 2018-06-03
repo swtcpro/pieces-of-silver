@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.commondata.data.DistributeMqData;
+import org.commondata.utils.MQUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aliyun.openservices.ons.api.SendResult;
-import com.jingtongsdk.utils.JingtongRequstConstants;
 import com.twb.entity.DistributeChannel;
 import com.twb.entity.DistributeLog;
 import com.twb.entity.SocketData;
@@ -86,7 +86,7 @@ public class DistributeServiceImp implements DistributeService
 
 	private void handlerDistributeLog(DistributeLog dl)
 	{
-		String sendData = JingtongRequstConstants.PRETTY_PRINT_GSON.toJson(dl);
+		String sendData = MQUtils.toJson(dl);
 		logger.info("handlerDistributeLog sendData:" + sendData);
 		
 		DistributeMqData dmd = new DistributeMqData();
@@ -98,7 +98,7 @@ public class DistributeServiceImp implements DistributeService
 		dmd.setDistributeType(dl.getDistributeType());
 		dmd.setFee(dl.getFee());
 		dmd.setHash(dl.getHash());
-		dmd.setId(dl.getId());
+		dmd.setId(dl.getHash());
 		dmd.setMemos(dl.getMemos());
 		dmd.setResult(dl.getResult());
 		dmd.setType(dl.getType());
