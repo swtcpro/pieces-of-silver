@@ -38,10 +38,15 @@ jingtum-monitordata
 
 commondata
 ----
-封装了一些公共方法和数据，
-如，CommitchainMqData，数据上链的消息格式，
-DistributeMqData 分发监听到的消息格式，
+封装了一些公共方法和数据，如：
+
+CommitchainMqData，数据上链的消息格式
+
+DistributeMqData 分发监听到的消息格式
+
 CommitChainRespMqData 上链结果反馈的消息格式
+
+MQUtils 发送消息和解析消息的一些公共方法
 
 
 business-sponsor-sendback
