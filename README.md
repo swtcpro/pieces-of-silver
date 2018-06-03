@@ -21,9 +21,9 @@ assertEquals(true, jr.isSuccess());
 		
 jingtum-monitordata
 ------- 
-1.socket监听钱包数据，做到业务能实时触发，
+1.socket监听钱包数据，做到业务能实时触发
 
-2.定时任务监听数据，做到验证socket监听的数据，和补发socket未监听到的数据。
+2.定时任务监听数据，做到验证socket监听的数据，和补发socket未监听到的数据
 
 3.监听钱包数据，根据定义的规则，通过MQ分发数据到业务系统
 
