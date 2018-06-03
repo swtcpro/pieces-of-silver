@@ -6,12 +6,16 @@ JingtongRequstConstants. URL_HEAD， 可以配置生产环境或测试环境
 然后调用 JingtongRequestUtils.sendRequest(JingtongRequest)，
 返回对应的JingtongResponse。
 
-如：查询余额，创建了查询余额BalancesRequest，并且赋值对应数据，返回的是BalancesResponse
+如：查询余额，创建了查询余额`Balances`Request，并且赋值对应数据，返回的是`Balances`Response
 
 BalancesRequest br = new BalancesRequest();
+
 br.setAddress("j4mk8vSKLVhto6RArmQKKGCMW6kc4x68xa");
+
 BalancesResponse jr = (BalancesResponse) JingtongRequestUtils.sendRequest(br);
+
 System.out.println(jr);
+
 assertEquals(true, jr.isSuccess());
 
 		
