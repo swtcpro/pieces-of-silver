@@ -22,10 +22,15 @@ assertEquals(true, jr.isSuccess());
 jingtum-monitordata
 ------- 
 1.监听钱包数据，根据定义的规则，分发数据到业务系统
+
 2.socket监听数据，做到业务实时出发，定时任务监听数据，做到验证socket监听的数据，和补发socket未监听到的数据。
+
 3.数据提交上链
+
 4.数据提交上链之后，监听地址，确认数据上链成功或失败
+
 5.数据上链确认成功或失败，响应到业务系统
+
 ![设计](https://github.com/swtcpro/pieces-of-silver/blob/master/jingtum-monitordata/sql/%E7%9B%91%E5%90%AC%E7%B3%BB%E7%BB%9F.png)
 
 
