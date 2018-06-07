@@ -84,7 +84,7 @@ public class SendbackDataServiceImp implements SendbackDataService
 		cmd.setAmountcurrency(sd.getAmountcurrency());
 		cmd.setAmountissuer(sd.getAmountissuer());
 		cmd.setAmountvalue(new BigDecimal(sd.getAmountvalue()).doubleValue());
-		cmd.setBusinessid(sd.getClass().getName()+sd.getId());
+		cmd.setBusinessid(sd.getClass().getSimpleName()+sd.getId());
 		cmd.setBusinessTag("");//无需反馈
 		cmd.setBusinessTopic("");//无需反馈
 		cmd.setCounterparty(sd.getCounterparty());
@@ -98,9 +98,7 @@ public class SendbackDataServiceImp implements SendbackDataService
 			logger.info("MQ发送成功,"+sr.getMessageId());
 			sd.setHandleFlag(SendbackData.HANDLE_FLAG_SUCCESS);
 			sd.setHandleMsg("MQ发送成功");
-			sd.setMessageId(sr.getMessageId());
-			sd.setMessageTopic(sr.getTopic());
-			sd.setMessageTag(tag);
+			sd.setCommitchainMessageId(sr.getMessageId());
 		}
 		else
 		{
