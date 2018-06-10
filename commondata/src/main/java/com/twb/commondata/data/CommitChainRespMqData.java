@@ -1,7 +1,15 @@
 package com.twb.commondata.data;
 
 import java.util.Date;
-
+/**
+ * 
+ * @Title:  CommitChainRespMqData.java   
+ * @Package com.twb.commondata.data   
+ * @Description:    上链结果反馈的消息格式 
+ * @author: 田文彬     
+ * @date:   2018年6月10日 下午3:20:20   
+ * @version V1.0
+ */
 public class CommitChainRespMqData
 {
 	

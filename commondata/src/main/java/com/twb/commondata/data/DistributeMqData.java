@@ -2,6 +2,15 @@ package com.twb.commondata.data;
 
 import java.util.Date;
 
+/**
+ * 
+ * @Title:  DistributeMqData.java   
+ * @Package com.twb.commondata.data   
+ * @Description:    分发监听到的消息格式 
+ * @author: 田文彬     
+ * @date:   2018年6月10日 下午3:20:03   
+ * @version V1.0
+ */
 public class DistributeMqData
 {
 	private String id;

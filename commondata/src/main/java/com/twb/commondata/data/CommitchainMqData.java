@@ -3,6 +3,15 @@ package com.twb.commondata.data;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 
+ * @Title:  CommitchainMqData.java   
+ * @Package com.twb.commondata.data   
+ * @Description:    数据上链的消息格式 
+ * @author: 田文彬     
+ * @date:   2018年6月10日 下午3:19:53   
+ * @version V1.0
+ */
 public class CommitchainMqData
 {
 	private String counterparty="";
