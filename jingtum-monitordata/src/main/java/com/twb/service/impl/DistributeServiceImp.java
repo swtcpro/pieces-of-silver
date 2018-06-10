@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.commondata.data.DistributeMqData;
-import org.commondata.utils.MQUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aliyun.openservices.ons.api.SendResult;
+import com.twb.commondata.data.DistributeMqData;
+import com.twb.commondata.utils.MQUtils;
 import com.twb.entity.DistributeChannel;
 import com.twb.entity.DistributeLog;
 import com.twb.entity.SocketData;

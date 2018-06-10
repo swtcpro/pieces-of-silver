@@ -3,7 +3,6 @@ package com.twb.service.impl;
 import java.util.Date;
 import java.util.List;
 
-import org.commondata.utils.MQUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jingtongsdk.bean.Jingtong.reqrsp.Transaction;
-import com.jingtongsdk.utils.JingtongRequstConstants;
+import com.twb.commondata.utils.MQUtils;
 import com.twb.data.SubscribeData;
 import com.twb.entity.DistributeChannel;
 import com.twb.entity.SocketData;

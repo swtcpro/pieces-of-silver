@@ -11,8 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.aliyun.openservices.ons.api.Consumer;
-import com.aliyun.openservices.ons.api.ONSFactory;
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
+import com.twb.commondata.utils.CommonConstants;
+import com.twb.commondata.utils.MQUtils;
 import com.twb.service.SendbackDataService;
 import com.twb.thread.SendbackListener;
 
@@ -33,14 +34,11 @@ public class SendBackTask
 	@Value("${SECRET_KEY}")
 	private String secret_key;
 
-	@Value("${ONSADDR}")
-	private String onsaddr;
 
 	@Value("${SENDBACKTASK_CONSUMER_ID}")
 	private String consumer_id;
 	
-	@Value("${SENDBACKTASK_TOPIC}")
-	private String topic;
+	private String topic = CommonConstants.COMMITCHAIN_TOPIC;
 
 	@Value("${SENDBACKTASK_TAG}")
 	private String tag;
@@ -65,8 +63,7 @@ public class SendBackTask
 		consumerProperties.setProperty(PropertyKeyConst.ConsumerId, consumer_id);
 		consumerProperties.setProperty(PropertyKeyConst.AccessKey, access_key);
 		consumerProperties.setProperty(PropertyKeyConst.SecretKey, secret_key);
-		consumerProperties.setProperty(PropertyKeyConst.ONSAddr, onsaddr);
-		Consumer consumer = ONSFactory.createConsumer(consumerProperties);
+		Consumer consumer = MQUtils.createConsumer(consumerProperties);
 		consumer.subscribe(topic, tag, new SendbackListener(sendbackDataServiceImp));
 		consumer.start();
 	}

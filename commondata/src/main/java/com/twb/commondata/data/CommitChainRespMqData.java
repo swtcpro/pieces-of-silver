@@ -1,4 +1,4 @@
-package org.commondata.data;
+package com.twb.commondata.data;
 
 import java.util.Date;
 
@@ -113,6 +113,14 @@ public class CommitChainRespMqData
 	public void setMemos(String memos)
 	{
 		this.memos = memos;
+	}
+	@Override
+	public String toString()
+	{
+		return "CommitChainRespMqData [id=" + id + ", counterparty=" + counterparty + ", amountvalue=" + amountvalue
+				+ ", amountcurrency=" + amountcurrency + ", amountissuer=" + amountissuer + ", memos=" + memos
+				+ ", businessid=" + businessid + ", commitchainMsg=" + commitchainMsg + ", commitchainHash="
+				+ commitchainHash + ", checkchainDate=" + checkchainDate + ", checkFlag=" + checkFlag + "]";
 	}
 	
 	

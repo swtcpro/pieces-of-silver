@@ -3,10 +3,9 @@ package com.twb;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.commondata.data.CommitchainMqData;
-import org.commondata.utils.MQUtils;
-
 import com.jingtongsdk.utils.JingtongRequstConstants;
+import com.twb.commondata.data.CommitchainMqData;
+import com.twb.commondata.utils.MQUtils;
 import com.twb.entity.DistributeLog;
 
 import junit.framework.TestCase;

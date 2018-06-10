@@ -15,8 +15,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.aliyun.openservices.ons.api.Consumer;
-import com.aliyun.openservices.ons.api.ONSFactory;
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
+import com.twb.commondata.utils.CommonConstants;
+import com.twb.commondata.utils.MQUtils;
 import com.twb.entity.CommitchainData;
 import com.twb.service.CommitchainDataService;
 import com.twb.thread.CommitchainListener;
@@ -37,19 +38,7 @@ public class CommitchainTask
 	@Value("${SECRET_KEY}")
 	private String secret_key;
 
-	@Value("${COMMITCHAIN_CONSUMER_ID}")
-	private String consumer_id;
-
-	@Value("${ONSADDR}")
-	private String onsaddr;
-
-	@Value("${COMMITCHAIN_TOPIC}")
-	private String topic;
-
-	@Value("${COMMITCHAIN_TAG}")
-	private String tag;
-	
-	//井通转账，线程多了，好像很容易异常
+	//井通转账线程
 	@Value("${COMMITCHAIN_THREADNUM}")
 	private int commitchainThreadnum ;
 
@@ -82,12 +71,11 @@ public class CommitchainTask
 		
 		// 启动MQ消费者，监听上链数据
 		Properties consumerProperties = new Properties();
-		consumerProperties.setProperty(PropertyKeyConst.ConsumerId, consumer_id);
+		consumerProperties.setProperty(PropertyKeyConst.ConsumerId, CommonConstants.COMMITCHAIN_CONSUMER_ID);
 		consumerProperties.setProperty(PropertyKeyConst.AccessKey, access_key);
 		consumerProperties.setProperty(PropertyKeyConst.SecretKey, secret_key);
-		consumerProperties.setProperty(PropertyKeyConst.ONSAddr, onsaddr);
-		Consumer consumer = ONSFactory.createConsumer(consumerProperties);
-		consumer.subscribe(topic, tag, new CommitchainListener(commitchainDataServiceImp));
+		Consumer consumer = MQUtils.createConsumer(consumerProperties);
+		consumer.subscribe(CommonConstants.COMMITCHAIN_TOPIC, CommonConstants.COMMITCHAIN_TAG, new CommitchainListener(commitchainDataServiceImp));
 		consumer.start();
 		
 		

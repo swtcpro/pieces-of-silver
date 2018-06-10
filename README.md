@@ -1,5 +1,7 @@
 jingtum-sdk
 ------- 
+API的简单封装
+
 JingtongRequstConstants. URL_HEAD， 可以配置生产环境或测试环境
 
 调用的话，创建对应JingtongRequest，并且赋值对应的参数

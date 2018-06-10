@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.commondata.data.CommitchainMqData;
-import org.commondata.data.DistributeMqData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.SendResult;
+import com.twb.commondata.data.CommitchainMqData;
+import com.twb.commondata.data.DistributeMqData;
 import com.twb.entity.SendbackData;
 import com.twb.repository.SendbackDataRepository;
 import com.twb.service.SendbackDataService;
@@ -33,11 +33,6 @@ public class SendbackDataServiceImp implements SendbackDataService
 	@Autowired
 	private MqProductServiceImp mqProductServiceImp;
 	
-	@Value("${COMMITCHAIN_TOPIC}")
-	private String topic;
-
-	@Value("${COMMITCHAIN_TAG}")
-	private String tag;
 	
 	@Value("${min_amount}")
 	private String min_amount;
@@ -92,7 +87,7 @@ public class SendbackDataServiceImp implements SendbackDataService
 		memos.put("prehash", sd.getHash());
 		memos.put("msg", "备注错误，请核对后再试，谢谢！");
 		cmd.setMemos(memos);
-		SendResult sr = mqProductServiceImp.sendMQ(topic, tag, cmd);
+		SendResult sr = mqProductServiceImp.sendCommitChainMQ(cmd);
 		if(sr!=null)
 		{
 			logger.info("MQ发送成功,"+sr.getMessageId());

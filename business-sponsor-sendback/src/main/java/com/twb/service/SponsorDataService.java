@@ -1,8 +1,7 @@
 package com.twb.service;
 
-import org.commondata.data.DistributeMqData;
-
 import com.aliyun.openservices.ons.api.Message;
+import com.twb.commondata.data.DistributeMqData;
 import com.twb.entity.SponsorData;
 
 public interface SponsorDataService

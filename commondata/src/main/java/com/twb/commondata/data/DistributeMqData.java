@@ -1,4 +1,4 @@
-package org.commondata.data;
+package com.twb.commondata.data;
 
 import java.util.Date;
 
@@ -139,6 +139,15 @@ public class DistributeMqData
 	public void setDistributeType(String distributeType)
 	{
 		this.distributeType = distributeType;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "DistributeMqData [id=" + id + ", date=" + date + ", hash=" + hash + ", type=" + type + ", result="
+				+ result + ", fee=" + fee + ", memos=" + memos + ", counterparty=" + counterparty + ", amountvalue="
+				+ amountvalue + ", amountcurrency=" + amountcurrency + ", amountissuer=" + amountissuer
+				+ ", distributeType=" + distributeType + "]";
 	}
 	
 	

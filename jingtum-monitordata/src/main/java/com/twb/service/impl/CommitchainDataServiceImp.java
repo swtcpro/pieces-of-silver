@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.commondata.data.CommitchainMqData;
-import org.commondata.utils.MQUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +23,8 @@ import com.jingtongsdk.bean.Jingtong.reqrsp.Payment;
 import com.jingtongsdk.bean.Jingtong.reqrsp.PaymentsTransferRequest;
 import com.jingtongsdk.bean.Jingtong.reqrsp.PaymentsTransferResponse;
 import com.jingtongsdk.utils.JingtongRequestUtils;
+import com.twb.commondata.data.CommitchainMqData;
+import com.twb.commondata.utils.MQUtils;
 import com.twb.entity.CommitchainData;
 import com.twb.repository.CommitchainDataRepository;
 import com.twb.service.CommitchainDataService;
@@ -307,16 +307,9 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public CommitchainData savaCdFromMq(String msg) throws Exception
+	public CommitchainData savaCdFromMq(CommitchainMqData cmd) throws Exception
 	{
-		if (StringUtils.isEmpty(msg))
-		{
-			logger.warn("msg is empty:" + msg);
-			return null;
-		}
-		CommitchainMqData cmd = MQUtils.getCommitchainMqData(msg);
 		
-		Map maps = (Map) JSON.parse(msg);
 		String counterparty = cmd.getCounterparty();
 		double amountvalue = cmd.getAmountvalue();
 		String amountcurrency = cmd.getAmountcurrency();
@@ -330,13 +323,13 @@ public class CommitchainDataServiceImp implements CommitchainDataService
 		// 业务id，唯一索引
 		if (StringUtils.isEmpty(businessid))
 		{
-			logger.error("businessid is empty:" + msg);
+			logger.error("businessid is empty:" + cmd);
 			return null;
 		}
 
 		if(amountvalue<=0)
 		{
-			logger.error("amountvalue<=0:" + msg);
+			logger.error("amountvalue<=0:" + cmd);
 			return null;
 		}
 		CommitchainData cd = new CommitchainData();

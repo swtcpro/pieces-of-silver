@@ -3,7 +3,6 @@ package com.twb;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.commondata.data.CommitchainMqData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.aliyun.openservices.ons.api.SendResult;
-import com.jingtongsdk.utils.JingtongRequstConstants;
+import com.twb.commondata.data.CommitchainMqData;
 import com.twb.service.MqProductService;
 
 @SpringBootTest(classes = JingtongMonitordataApplication.class) 
@@ -69,7 +68,7 @@ public class MqProductTest
 		Map memos = new HashMap();
 		memos.put("aa", "11");
 		cmd.setMemos(memos);
-		SendResult sr = mqProductServiceImp.sendMQ(topic, tag, cmd);
+//		SendResult sr = mqProductServiceImp.sendMQ(topic, tag, cmd);
 		Thread.sleep(600000);
 	}
 	
@@ -89,7 +88,7 @@ public class MqProductTest
 			Map memos = new HashMap();
 			memos.put("test", "test");
 			cmd.setMemos(memos);
-			SendResult sr = mqProductServiceImp.sendMQ(topic, tag, cmd);
+//			SendResult sr = mqProductServiceImp.sendMQ(topic, tag, cmd);
 		}
 		
 		Thread.sleep(6000000);

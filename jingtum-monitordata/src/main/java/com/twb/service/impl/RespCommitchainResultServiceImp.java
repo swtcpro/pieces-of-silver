@@ -3,7 +3,6 @@ package com.twb.service.impl;
 import java.util.Date;
 import java.util.List;
 
-import org.commondata.data.CommitChainRespMqData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aliyun.openservices.ons.api.SendResult;
-import com.jingtongsdk.utils.JingtongRequstConstants;
+import com.twb.commondata.data.CommitChainRespMqData;
 import com.twb.entity.CommitchainData;
 import com.twb.repository.CommitchainDataRepository;
 import com.twb.service.MqProductService;

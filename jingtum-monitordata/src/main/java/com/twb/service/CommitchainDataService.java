@@ -2,6 +2,7 @@ package com.twb.service;
 
 import java.util.List;
 
+import com.twb.commondata.data.CommitchainMqData;
 import com.twb.entity.CommitchainData;
 
 
@@ -30,7 +31,7 @@ public interface CommitchainDataService {
 	 * @return: CommitchainData      
 	 * @throws
 	 */
-	CommitchainData savaCdFromMq(String msg) throws Exception;
+	CommitchainData savaCdFromMq(CommitchainMqData cmd) throws Exception;
 
 
 

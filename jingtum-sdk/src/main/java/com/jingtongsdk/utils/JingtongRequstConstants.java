@@ -8,7 +8,7 @@ import com.jingtongsdk.bean.Jingtong.reqrsp.TransactionAmount;
 
 public class JingtongRequstConstants
 {
-	public static final String URL_HEAD = "https://api.jingtum.com";
+	public static final String URL_HEAD = "https://tapi.jingtum.com";
 
 	public static final String GET_TYPE = "0";
 	public static final String POST_TYPE = "1";

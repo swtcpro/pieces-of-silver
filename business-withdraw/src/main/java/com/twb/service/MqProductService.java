@@ -5,5 +5,6 @@ import com.twb.commondata.data.CommitchainMqData;
 
 public interface MqProductService
 {
+
 	SendResult sendCommitChainMQ(CommitchainMqData data);
 }

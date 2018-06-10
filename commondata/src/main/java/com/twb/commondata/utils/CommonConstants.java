@@ -1,4 +1,4 @@
-package org.commondata.utils;
+package com.twb.commondata.utils;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;

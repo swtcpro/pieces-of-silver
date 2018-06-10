@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 import com.aliyun.openservices.ons.api.Producer;
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
 import com.aliyun.openservices.ons.api.SendResult;
-import com.twb.commondata.data.CommitChainRespMqData;
 import com.twb.commondata.data.CommitchainMqData;
-import com.twb.commondata.data.DistributeMqData;
 import com.twb.commondata.utils.MQUtils;
 import com.twb.service.MqProductService;
 
@@ -45,19 +43,6 @@ public class MqProductServiceImp implements MqProductService
 	}
 
 	
-	
-
-
-	@Override
-	public SendResult sendMQ(String topic, String tag, CommitChainRespMqData data)
-	{
-		return MQUtils.sendMQ(producer, topic, tag, data);
-	}
-	@Override
-	public SendResult sendMQ(String topic, String tag, DistributeMqData data)
-	{
-		return MQUtils.sendMQ(producer, topic, tag, data);
-	}
 	@Override
 	public SendResult sendCommitChainMQ(CommitchainMqData data)
 	{

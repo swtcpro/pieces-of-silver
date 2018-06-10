@@ -99,12 +99,13 @@ public class JingtongRequestUtilsTest extends TestCase
 	// 转账支付
 	public void testPaymentsTransferRequest() throws Exception
 	{
-		for(int i=3;i<4;i++)
+		int j=19;
+		for(int i=0;i<1;i++)
 		{
 			PaymentsTransferRequest ptr = new PaymentsTransferRequest();
 			ptr.setSource_address("jGkxobBPv8Wc4o65Asq9WfTYKEpui1JY9t");
 			ptr.setSecret("sh6BDfCoEEtW5t9TAv9X5piD3Sdex");
-			ptr.setClient_id("testclientidac" + i);
+			ptr.setClient_id("testclientidac" + j);
 
 			Payment payment = new Payment();
 			Amount amount = new Amount();
@@ -115,7 +116,7 @@ public class JingtongRequestUtilsTest extends TestCase
 			payment.setDestination("jELSEmqBspxkUtLKVUN1Vf6EjoMCAVXnFL");
 			payment.setSource("jGkxobBPv8Wc4o65Asq9WfTYKEpui1JY9t");
 			payment.setMemos(new String[]
-			{ "赞赏"+i});
+			{ "赞o5VVk1XKKlCA2wXP7RGy8W2c9RdI"});
 			ptr.setPayment(payment);
 
 			JingtongResponse jr = JingtongRequestUtils.sendRequest(ptr);

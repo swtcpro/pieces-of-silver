@@ -1,10 +1,7 @@
-package org.commondata.utils;
+package com.twb.commondata.utils;
 
 import java.util.Properties;
 
-import org.commondata.data.CommitChainRespMqData;
-import org.commondata.data.CommitchainMqData;
-import org.commondata.data.DistributeMqData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +11,9 @@ import com.aliyun.openservices.ons.api.ONSFactory;
 import com.aliyun.openservices.ons.api.Producer;
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
 import com.aliyun.openservices.ons.api.SendResult;
+import com.twb.commondata.data.CommitChainRespMqData;
+import com.twb.commondata.data.CommitchainMqData;
+import com.twb.commondata.data.DistributeMqData;
 
 public class MQUtils
 {

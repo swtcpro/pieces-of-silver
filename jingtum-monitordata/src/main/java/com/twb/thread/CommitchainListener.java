@@ -10,6 +10,9 @@ import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
+import com.twb.commondata.data.CommitchainMqData;
+import com.twb.commondata.data.DistributeMqData;
+import com.twb.commondata.listener.CommitchainMqListener;
 import com.twb.entity.CommitchainData;
 import com.twb.service.CommitchainDataService;
 import com.twb.utils.CommitchainDataQueue;
@@ -23,40 +26,26 @@ import com.twb.utils.CommitchainDataQueue;
  * @date:   2018年5月27日 下午11:51:28   
  * @version V1.0
  */
-public class CommitchainListener implements MessageListener
+public class CommitchainListener extends CommitchainMqListener
 {
 
 	private static final Logger logger = LoggerFactory.getLogger(CommitchainListener.class);
 
 	private CommitchainDataService commitchainDataServiceImp;
 
-	@Override
-	public Action consume(Message message, ConsumeContext consumeContext)
+	public Action consume(CommitchainMqData cmd,Message message, ConsumeContext consumeContext)
 	{
 		// 如果想测试消息重投的功能,可以将Action.CommitMessage 替换成Action.ReconsumeLater
 		logger.info(" Receive message, Topic is:" + message.getTopic() + ", MsgId is:" + message.getMsgID());
 
-		String msgBody = "";
-		try
-		{
-			msgBody = new String(message.getBody(), "UTF-8");
-		}
-		catch (UnsupportedEncodingException e)
-		{
-			msgBody = new String(message.getBody());
-			e.printStackTrace();
-			logger.error("getBody", e);
-		}
-		logger.info("msgBody : " +msgBody);
-
+		
 		CommitchainData cd = null;
 		try
 		{
-			cd = commitchainDataServiceImp.savaCdFromMq(msgBody);
+			cd = commitchainDataServiceImp.savaCdFromMq(cmd);
 		}
 		catch (Exception e)
 		{
-//			e.printStackTrace();
 			logger.error("savaCdFromMq", e);
 		}
 		
@@ -90,5 +79,6 @@ public class CommitchainListener implements MessageListener
 	{
 		super();
 	}
+
 
 }

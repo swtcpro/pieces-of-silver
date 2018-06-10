@@ -1,9 +1,8 @@
-package org.commondata.utils;
-
-import org.commondata.data.Exclude;
+package com.twb.commondata.utils;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
+import com.twb.commondata.data.Exclude;
 
 public class MyExclusionStrategy implements ExclusionStrategy
 {

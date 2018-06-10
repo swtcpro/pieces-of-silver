@@ -1,4 +1,4 @@
-package org.commondata.data;
+package com.twb.commondata.data;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

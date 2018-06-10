@@ -1,4 +1,4 @@
-package org.commondata.data;
+package com.twb.commondata.data;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,13 +61,7 @@ public class CommitchainMqData
 	{
 		this.businessTag = businessTag;
 	}
-	@Override
-	public String toString()
-	{
-		return "CommitchainMqData [counterparty=" + counterparty + ", amountvalue=" + amountvalue + ", amountcurrency="
-				+ amountcurrency + ", amountissuer=" + amountissuer + ", memos=" + memos + ", businessid=" + businessid
-				+ ", businessTopic=" + businessTopic + ", businessTag=" + businessTag + "]";
-	}
+
 	public double getAmountvalue()
 	{
 		return amountvalue;
@@ -83,6 +77,13 @@ public class CommitchainMqData
 	public void setAmountcurrency(String amountcurrency)
 	{
 		this.amountcurrency = amountcurrency;
+	}
+	@Override
+	public String toString()
+	{
+		return "CommitchainMqData [counterparty=" + counterparty + ", amountvalue=" + amountvalue + ", amountcurrency="
+				+ amountcurrency + ", amountissuer=" + amountissuer + ", memos=" + memos + ", businessid=" + businessid
+				+ ", businessTopic=" + businessTopic + ", businessTag=" + businessTag + "]";
 	}
 	
 	
