@@ -54,3 +54,7 @@ MQUtils 发送消息和解析消息的一些公共方法
 business-sponsor-sendback
 ---
 业务逻辑，赞赏业务，和回退业务。
+
+business-withdraw
+---
+提现业务
