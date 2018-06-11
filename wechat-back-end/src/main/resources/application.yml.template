@@ -1,0 +1,27 @@
+logging:
+  level:
+    org.springframework.web: DEBUG
+    com.github.binarywang.demo.wechat: DEBUG
+  path: /var/java/logs/weixin
+
+ #当前的公众号appid和secret 
+wechat: 
+  mp:
+    appId: 
+    secret: 
+    token:  
+    aesKey: 
+server: 
+    port: 
+#支付的公众号appid和secret
+yunwx: 
+  appid: 
+  secret: 
+#网址  
+weburl: 
+#数据库
+spring: 
+  datasource: 
+    url: 
+    username: 
+    password: 
