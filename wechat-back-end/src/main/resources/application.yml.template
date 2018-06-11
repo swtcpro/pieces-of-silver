@@ -24,4 +24,5 @@ spring:
   datasource: 
     url: 
     username: 
-    password: 
+    password:
+     
