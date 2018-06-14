@@ -67,10 +67,9 @@ dest_system varchar(200) COLLATE utf8_unicode_ci COMMENT '目的系统',
 remark varchar(200) COLLATE utf8_unicode_ci COMMENT ' 备注'
     ) ENGINE = InnoDB COMMENT '分发通道表';
 
- INSERT INTO distribute_channel VALUES ('1', 'sent', '3', '响应', 'jingtum', 'allsent', '1', '消息响应系统', '所有的出账，推送给消息响应系统');
-INSERT INTO distribute_channel VALUES ('2', 'received', '2', null, 'jingtum', 'response', '1', '消息响应系统', '入账，没有业务系统响应，推送给消息响应系统，原路返回');
-INSERT INTO distribute_channel VALUES ('3', 'received', '3', '提取', 'jingtum', 'withdrawal', '1', '零花钱提现', '入账，并且是提现业务，推送给零花钱提现系统');
-
+INSERT INTO `distribute_channel` VALUES (1, 'received', '2', NULL, 'jingtumpro', 'SENDBACK', '1', '消息响应系统', '入账，没有业务系统响应，推送给消息响应系统，原路返回');
+INSERT INTO `distribute_channel` VALUES (2, 'received', '3', '提取', 'jingtumpro', 'WITHDRAWAL', '1', '零花钱提现', '入账，并且是提现业务，推送给零花钱提现系统');
+INSERT INTO `distribute_channel` VALUES (3, 'received', '3', '赞赏', 'jingtumpro', 'SPONSOR', '1', '赞赏', '入账，并且是赞赏业务');
  DROP TABLE IF EXISTS distribute_log ;
     CREATE TABLE distribute_log
     (
