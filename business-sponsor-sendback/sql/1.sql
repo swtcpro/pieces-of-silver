@@ -1,5 +1,3 @@
-SendBackTask
-sponsorTask
 
 	DROP TABLE IF EXISTS sponsor_data;
     CREATE TABLE sponsor_data
