@@ -3,26 +3,29 @@ logging:
     org.springframework.web: DEBUG
     com.github.binarywang.demo.wechat: DEBUG
   path: /var/java/logs/weixin
-
- #当前的公众号appid和secret 
+  
 wechat: 
   mp:
     appId: 
     secret: 
     token:  
     aesKey: 
+  mch_id: 
+  mch_key: 
+  notify_url:
+  maxAmout: 
 server: 
     port: 
-#支付的公众号appid和secret
+
+
 yunwx: 
   appid: 
   secret: 
-#网址  
 weburl: 
-#数据库
+
 spring: 
   datasource: 
-    url: 
-    username: 
-    password:
-     
+    url: jdbc:mysql://localhost:3306/weixinxff?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 123
+

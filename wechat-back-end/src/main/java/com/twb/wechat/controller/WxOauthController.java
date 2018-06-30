@@ -89,6 +89,83 @@ public class WxOauthController
 		}
 		
 	}
+	
+	/**
+	 * Oauth网页认证，由于支付用的不是当前公众号,需要获取当前公众号的openID和支付用的openid
+	 * @Description: 
+	 * @param request
+	 * @return void
+	 * @throws Exception 
+	 */
+	@RequestMapping("/openid")
+	public ModelAndView oauthSnsapiBaseXffopenid(HttpServletRequest request,
+			String code, String state) throws Exception
+	{
+		WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxService.oauth2getAccessToken(code);
+		if (wxMpOAuth2AccessToken == null)
+		{
+			logger.error("wxMpOAuth2AccessToken is null");
+		}
+		String openidxff = wxMpOAuth2AccessToken.getOpenId();
+		if (StringUtils.isEmpty(openidxff))
+		{
+			logger.error("openidxff is empty");
+		}
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append(state);
+		// 没有带参数处理
+		if (sb.indexOf("?") == -1)
+		{
+			sb.append("?").append("openid=").append(openidxff);
+		}
+		else
+		{
+			sb.append("&").append("openid=").append(openidxff);
+		}
+		logger.info("oauthSnsapiBaseXffopenid sendUrl:" + sb.toString());
+		return new ModelAndView("redirect:" + sb.toString());
+
+	}
+	
+	@RequestMapping("/submitorder")
+	public ModelAndView submitorder(String code, String state) throws Exception
+	{
+
+		if(StringUtils.isEmpty(code))
+		{
+			return new ModelAndView("redirect:" + "https://open.weixin.qq.com/connect/oauth2/authorize?scope=snsapi_base&response_type=code&redirect_uri=https://www.twbbb.cn/wechat/oauth/submitorder&appid=wx3ef9424877a495df");
+		}
+		
+		WxMpOAuth2AccessToken wxMpOAuth2AccessToken = null;
+		try
+		{
+			wxMpOAuth2AccessToken = wxService.oauth2getAccessToken(code);
+		}
+		catch (Exception e)
+		{
+			logger.error("submitorder oauth2getAccessToken",e);
+			return new ModelAndView("redirect:" + "https://open.weixin.qq.com/connect/oauth2/authorize?scope=snsapi_base&response_type=code&redirect_uri=https://www.twbbb.cn/wechat/oauth/submitorder&appid=wx3ef9424877a495df");
+		}
+		if (wxMpOAuth2AccessToken == null)
+		{
+			logger.error("submitorder wxMpOAuth2AccessToken is null");
+		}
+		String openidxff = wxMpOAuth2AccessToken.getOpenId();
+		if (StringUtils.isEmpty(openidxff))
+		{
+			logger.error("submitorder openidxff is empty");
+		}
+		
+		Map paramMap = new HashMap();
+		paramMap.put("openid", openidxff);
+		
+//		Map paramMap = new HashMap();
+//		paramMap.put("openiddsb", "ocfZ605JmZQhqlZOq1Nf_6HZe1AE");
+		
+		return new ModelAndView("index", paramMap);
+
+	}
 
 	/**
 	 * Oauth网页认证，由于支付用的不是当前公众号,需要获取当前公众号的openID和支付用的openid
@@ -102,34 +179,46 @@ public class WxOauthController
 			String code, String state) throws Exception
 	{
 
-		// 云大商帮获取OpenID
-		if (yunwx_appid.equals(authAppid))
+		if(StringUtils.isEmpty(code))
 		{
-			Map param = getYundsbParam(code, state);
-
-			return new ModelAndView("jingtong", param);
+			return new ModelAndView("redirect:" + "https://open.weixin.qq.com/connect/oauth2/authorize?scope=snsapi_base&response_type=code&redirect_uri=https://www.twbbb.cn/wechat/oauth/wx3ef9424877a495df/snsapi_base.form&appid=wx3ef9424877a495df");
 		}
-
-		Map paramMap = getXffParam(code);
-		if (paramMap.containsKey(OPENID_XFF))
+		try
 		{
-			if (paramMap.containsKey(OPENID_DSB))
+			// 云大商帮获取OpenID
+			if (yunwx_appid.equals(authAppid))
 			{
-				return new ModelAndView("jingtong", paramMap);
+				Map param = getYundsbParam(code, state);
+
+				return new ModelAndView("tx", param);
 			}
-			else
+
+			Map paramMap = getXffParam(code);
+			if (paramMap.containsKey(OPENID_XFF))
 			{
-				String openid_xff = (String) paramMap.get(OPENID_XFF);
-				String token = TokenProccessor.getInstance().makeToken();
-				TOEKN_MAP.put(token,true);
-				String md5 = EncryptUtils.getMd5Salt(openid_xff+"|"+token);
-				String stateSend = openid_xff+"|"+token + "|" + md5;
-				String sendUrl = openidUrl(yunwx_appid, stateSend);
-				logger.info("sendUrl:" + sendUrl);
-				return new ModelAndView("redirect:" + sendUrl);
+				if (paramMap.containsKey(OPENID_DSB))
+				{
+					return new ModelAndView("tx", paramMap);
+				}
+				else
+				{
+					String openid_xff = (String) paramMap.get(OPENID_XFF);
+					String token = TokenProccessor.getInstance().makeToken();
+					TOEKN_MAP.put(token,true);
+					String md5 = EncryptUtils.getMd5Salt(openid_xff+"|"+token);
+					String stateSend = openid_xff+"|"+token + "|" + md5;
+					String sendUrl = openidUrl(yunwx_appid, stateSend);
+					logger.info("sendUrl:" + sendUrl);
+					return new ModelAndView("redirect:" + sendUrl);
+				}
 			}
+			return new ModelAndView("tx", paramMap);
 		}
-		return new ModelAndView("jingtong", paramMap);
+		catch (Exception e)
+		{
+			logger.error("oauthSnsapiBaseNew error",e);
+			return new ModelAndView("redirect:" + "https://open.weixin.qq.com/connect/oauth2/authorize?scope=snsapi_base&response_type=code&redirect_uri=https://www.twbbb.cn/wechat/oauth/wx3ef9424877a495df/snsapi_base.form&appid=wx3ef9424877a495df");
+		}
 
 	}
 

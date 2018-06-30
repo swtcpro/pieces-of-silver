@@ -46,11 +46,26 @@ public class WxMenuController  {
 
   @GetMapping("/create")
   public String menuCreateSample() throws WxErrorException {
+	
+	    
     WxMenu menu = new WxMenu();
+    
     WxMenuButton button1 = new WxMenuButton();
-    button1.setType(MenuButtonType.VIEW);
-    button1.setName("井通");
-    button1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?scope=snsapi_base&response_type=code&redirect_uri=http://www.twbbb.cn/wechat/oauth/wx3ef9424877a495df/snsapi_base.form&appid=wx3ef9424877a495df");
+	button1.setName("碎银子");
+	
+	WxMenuButton button11 = new WxMenuButton();
+	button11.setType(MenuButtonType.VIEW);
+	button11.setName("碎银子提取");
+	button11.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?scope=snsapi_base&response_type=code&redirect_uri=https://www.twbbb.cn/wechat/oauth/wx3ef9424877a495df/snsapi_base.form&appid=wx3ef9424877a495df");
+    button1.getSubButtons().add(button11);
+
+	WxMenuButton button12 = new WxMenuButton();
+	button12.setType(MenuButtonType.VIEW);
+	button12.setName("碎银子充值");
+	button12.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?scope=snsapi_base&response_type=code&redirect_uri=https://www.twbbb.cn/wechat/oauth/submitorder&appid=wx3ef9424877a495df");
+    button1.getSubButtons().add(button12);
+
+    
     menu.getButtons().add(button1);
     
     WxMenuButton button2 = new WxMenuButton();
@@ -58,22 +73,22 @@ public class WxMenuController  {
     
     WxMenuButton button21 = new WxMenuButton();
     button21.setType(MenuButtonType.VIEW_LIMITED);
-    button21.setName("零花钱提取描述");
+    button21.setName("提取描述");
     button21.setMediaId("NkE4Htrl7dB1sZAUGLhJQl41ihYK8uLBuPqevOzc_aI");
     button2.getSubButtons().add(button21);
     
-    WxMenuButton button22 = new WxMenuButton();
-    button22.setType(MenuButtonType.VIEW_LIMITED);
-    button22.setName("抽奖描述");
-    button22.setMediaId("NkE4Htrl7dB1sZAUGLhJQgPZaXnRat87DNEnBjh6sfI");
-    button2.getSubButtons().add(button22);
+//   WxMenuButton button22 = new WxMenuButton();
+//    button22.setType(MenuButtonType.VIEW_LIMITED);
+//    button22.setName("抽奖描述");
+//    button22.setMediaId("NkE4Htrl7dB1sZAUGLhJQgPZaXnRat87DNEnBjh6sfI");
+//    button2.getSubButtons().add(button22);
     
-    menu.getButtons().add(button2);
+    menu.getButtons().add(button21);
 
     WxMenuButton button3 = new WxMenuButton();
     button3.setName("赞赏");
     button3.setType(MenuButtonType.VIEW);
-    button3.setUrl("http://www.twbbb.cn/wechat/zanshang");
+    button3.setUrl("https://www.twbbb.cn/wechat/zanshang");
     menu.getButtons().add(button3);
 //
 //    WxMenuButton button31 = new WxMenuButton();

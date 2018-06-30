@@ -14,6 +14,21 @@
 	</head>
 
 	<style>
+
+		/* iPhone 4/5 */
+		html { font-size:42.666px; }
+		/* Android */
+		@media (min-width:360px){
+			html { font-size:48px; }
+		}
+		/* iPhone6 */
+		@media (min-width:375px){
+			html { font-size:50px; }
+		}
+		/* iPhone6 Plus */
+		@media (min-width:414px){
+			html { font-size:55.2px; }
+		}
 		p,dl,dd {
 			margin: 0;
 			padding: 0;
@@ -26,42 +41,49 @@
 		}
 		
 		body {
-			font-size: 14px;
+			font-size: 0.14rem;
 			line-height: 180%;
-			min-width: 320px;
+			min-width: 3.2rem;
 			height: 100%;
 			display: block;
+			margin: 0;
 		}
 		
 		.copy-btn {
 			border: 1px solid #eee;
 			padding: 1px 2px;
-			border-radius: 2px;
-			background-color: #eee;
-			color: #0f6a8e;
-			font-size: 14px;
+			color: #fff;
+			font-size: 0.14rem;
 		}
+		dl{padding: 0 0.2rem;margin-top: 0.2rem;}
+		dt{margin: 0.15rem; 0;}
+		dd input{width: 80%;border: 1px solid #0073ff;border-radius: 0.1rem;background-color: #fff;line-height: 0.8rem;box-sizing: border-box;padding: 0 0.1rem;font-size: 0.12rem;color: #0073ff;}
+		dd button{width: 15%;float: right;background: #0073ff;line-height: 0.8rem;border-radius: 0.1rem;}
+		dt p{font-size: 0.18rem;color: #333;line-height: 0.4rem;}
 	</style>
 
 	<body>
 		<div>
-			<p>此功能仅供井通社区交流学习使用</p>
 			<dl>
-				<dt>井通转账地址： <button class="copy-btn" data-clipboard-action="copy" data-clipboard-target="#foo"> 复制</button></dt>
-				<dd id="foo">jHsNtDtM1ze2VC916TWK8zS92kiYQ26qEC</dd>
+				<dt>井通转账地址：</dt>
+				<dd><input type="text" readonly="readonly" name="" id="foo" value="jMfKG7ZXSreaxq343MWidSW77tsjMy9777"/><button class="copy-btn" data-clipboard-action="copy" data-clipboard-target="#foo"> 复制</button></dd>
+				
 
-				<dt>备注：<button class="copy-btn" data-clipboard-action="copy" data-clipboard-target="#doo"> 复制</button></dt>
-				<dd id="doo">赞赏 </dd>
+				<dt>备注：</dt>
+				<dd><input type="text" readonly="readonly" name="" id="doo" value="" th:value="'赞赏'" /><button class="copy-btn" data-clipboard-action="copy" data-clipboard-target="#doo"> 复制</button></dd>
+				<!-- <dd id="doo"><p th:text="${openiddsb}" /></dd> -->
+				
 				<br/>
 				<dt>
-					<p>注意事项：</p>
-					<p>赞赏，金额将转入作者钱包,用来开发下一个小工具。谢谢。:-)</p>					
+					<p style="text-align: center;font-size: 0.26rem;color: #333;">注意事项：</p>
+					<p>赞赏金额将转入作者钱包,用来开发下一个小工具。谢谢。:-)</p>
 				</dt>
 			</dl>
 
 		</div>
+		<a style="position: absolute;bottom: 0.3rem;text-align: center;width: 100%;display: block;font-size: 0.16rem;color: #666;">此功能仅供井通社区交流学习使用</a>
 	</body>
-<script th:src="@{/js/clipboard.min.js}"></script>
+	<script th:src="@{/js/clipboard.min.js}"></script>
     <!-- 3. Instantiate clipboard -->
     <script>
     var clipboard = new ClipboardJS('.copy-btn');
@@ -73,4 +95,5 @@
         //console.log(e);
     });
     </script>
+
 </html>

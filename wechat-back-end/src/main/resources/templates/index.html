@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>碎银子</title>
+<link rel="stylesheet" type="text/css" href="/css/base.css?1.12" />
+<script src="https://cdn.bootcss.com/jquery/1.11.2/jquery.min.js?0.1"></script>
+<script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+</head>
+<body class="bgWhite">
+	<div class="banner">
+		<img src="/images/banner2.png" />
+	</div>
+	<div class="walletTitle">
+		<h1>钱包地址：</h1>
+	</div>
+	<div class="walletAddr">
+		<input type="text" name="addr" placeholder="请输入钱包地址" />
+	</div>
+	<div class="walletTitle">
+		<h1>购买CNT</h1>
+	</div>
+	<div class="buy">
+		<ul>
+			<li data="100">1元</li>
+			<li data="500">5元</li>
+			<li data="1000">10元</li>
+			<li data="2000">20元</li>
+			<li data="3000">30元</li>
+			<li data="5000">50元</li>
+		</ul>
+	</div>
+	<div class="buynow">立即购买</div>
+	<script th:inline="javascript">
+   jQuery.browser = {};
+    (function () {
+        jQuery.browser.msie = false;
+        jQuery.browser.version = 0;
+        if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+            jQuery.browser.msie = true;
+            jQuery.browser.version = RegExp.$1;
+        }
+    })();
+
+    $(function()
+      {
+        var openid= [[${openid}]];
+        var fee=0;
+    	if(!openid) alert('缺少参数，请重新打开页面!');
+    	if(openid)
+        {
+        	$('.buy li').click(function()
+            	{
+              		$(this).siblings().removeClass("selected");
+					$(this).addClass("selected");
+					fee=$(this).attr("data");
+            	}
+            );
+            $('.buynow').click(function()
+              {
+              	addr=$("input[name=addr]").val();
+                if(!addr){alert('请输入正确的钱包地址');return}
+                if(!fee){alert('请选择一个合适的充值金额');return}
+                $(this).jqLoading();
+                inmap={"openid":openid,"address":addr,"total_fee":fee};
+                parma={"inmap":inmap};
+                $.ajax({
+				type:"POST",
+				url:"/wechat/order/submit",
+				contentType:"application/json;charset=utf-8",
+				data:JSON.stringify(parma),
+				dataType:"json",
+				success: function(data){$(this).jqLoading("destroy");readyPay(data)},
+				error: function(data){$(this).jqLoading("destroy");alert(data.returnmsg)}
+              });
+            });
+        }
+      function readyPay(data)
+      {
+        if(data.returncode=="false") {alert(data.returnmsg);}
+        if(data.returncode=="true")
+        {
+        	signData=data.outmap;
+          	WeixinJSBridge.invoke(
+             'getBrandWCPayRequest', {
+                  "timeStamp": signData.timeStamp,
+              "package":  signData.package,
+              "paySign": signData.paySign,
+              "appId": signData.appId,
+              "signType": "MD5",
+              "nonceStr": signData.nonceStr
+             },
+             function(res){  
+                 if(res.err_msg == "get_brand_wcpay_request:ok" ) {}     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
+             }
+         ); 
+        }
+      }
+    }
+    );
+
+if (typeof WeixinJSBridge == "undefined"){
+   if( document.addEventListener ){
+       document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+   }else if (document.attachEvent){
+       document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+       document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+   }
+}else{
+   onBridgeReady();
+}
+</script>
+<script src="/js/jquery-ui-jqLoding.js" type="text/javascript"></script>
+</body>
+</html>

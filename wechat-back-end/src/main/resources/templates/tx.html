@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<title>碎银子</title>
+	<link rel="stylesheet" type="text/css" href="/css/base.css?1.17"/>
+  <script src="https://cdn.bootcss.com/jquery/1.11.2/jquery.min.js?0.1"></script>
+</head>
+<body class="bgWhite">
+<div class="banner">
+	<img src="/images/banner.png"/>
+</div>
+<div class="walletTitle kb">
+	<h1>钱包地址</h1><i></i>
+</div>
+<div class="walletAddr">
+	<input type="text" class="txt" name="addr" placeholder="请输入钱包地址" value="jMfKG7ZXSreaxq343MWidSW77tsjMy9777"/><div id="addr">复制</div>
+</div>
+<div class="walletTitle kb">
+	<h1>备注</h1><i></i>
+</div>
+<div class="walletAddr">
+	<input type="text" class="txt" name="memo" placeholder="" th:value="'提取'+${openiddsb}"/><div id="memo">复制</div>
+</div>
+<a href="https://mp.weixin.qq.com/s/inn8VP6R9JwQ9sgpqekV-Q">点击查看详细操作流程</a>
+<script type="text/javascript">
+  $(function()
+    {
+     $('#addr').click(function(){
+      if(document.execCommand){
+		var e=$('input[name='+$(this).attr('id')+']');
+		e.select();
+		try{
+            if(document.execCommand('copy', false, null)){
+                alert('钱包地址复制成功')
+            } else{
+                alert('something wrong.')
+            }
+        } catch(err){
+            alert('copy failed')
+        }
+	}
+    });
+    
+    
+    $('#memo').click(function(){
+      if(document.execCommand){
+		var e=$('input[name='+$(this).attr('id')+']');
+		e.select();
+		try{
+            if(document.execCommand('copy', false, null)){
+                alert('备注复制成功')
+            } else{
+                alert('something wrong.')
+            }
+        } catch(err){
+            alert('copy failed')
+        }
+	}
+    });
+  });
+
+  </script>
+</body>
+</html>
