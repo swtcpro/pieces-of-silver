@@ -53,18 +53,21 @@ MQUtils 发送消息和解析消息的一些公共方法
 
 business-sponsor-sendback
 ---
-业务逻辑，赞赏业务，和回退业务。
+业务逻辑，赞赏业务，和回退业务
 
 business-withdraw
 ---
-提现业务
+提现业务，调用的微信企业付款接口
 
 
 wechat-back-end
 ---
-微信端
+微信端，微信端提现和支付页面
 
 
 wechat-back-commitchain
 ---
-微信支付回调
+微信支付回调，回调后，通过MQ发送上链数据，
+通过MQ获取上链结果，修改订单状态
+
+
