@@ -250,7 +250,7 @@ public class OrderPayServiceImp implements OrderPayService
 			map.put("createTime", CommonUtils.toString(op.getCreateTime()));
 			map.put("state", CommonUtils.toString(op.getState()));
 			map.put("stateName", CommonUtils.toString(op.getStateName()));
-			
+			map.put("body", CommonUtils.toString(op.getBody()));
 			outlist.add(map);
 		}
 		
