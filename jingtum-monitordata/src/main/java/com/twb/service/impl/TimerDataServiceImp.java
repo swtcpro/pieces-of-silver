@@ -64,6 +64,7 @@ public class TimerDataServiceImp implements TimerDataService
 			Transaction[] timerDatas = jrr.getTransactions();
 			for (Transaction tran : timerDatas)
 			{
+				//检查是否是lastHash
 				if (lastHash != null && lastHash.length() > 0 && lastHash.equals(tran.getHash()))
 				{
 					checkLastHash = true;
