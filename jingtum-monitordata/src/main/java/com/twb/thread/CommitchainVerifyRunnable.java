@@ -27,7 +27,7 @@ public class CommitchainVerifyRunnable implements Runnable
 			try
 			{
 				CommitchainVerifyData cvd = CommitChainVerifyDataQueue.get();
-				//如果是待上链数据，将数据准备
+				//检查上链数据
 				commitchainVerifyServiceImp.doingTocheckCVD(cvd);
 				
 			}
